@@ -1,17 +1,22 @@
 import { path } from "@vuepress/utils";
 import { defineUserConfig } from "vuepress";
-import type { DefaultThemeOptions } from "vuepress";
-
-export default defineUserConfig<DefaultThemeOptions>({
+import { localTheme } from "./theme";
+const { searchPlugin } = require("@vuepress/plugin-search");
+const { registerComponentsPlugin } = require('@vuepress/plugin-register-components')
+import { viteBundler } from '@vuepress/bundler-vite'
+export default defineUserConfig({
   // 站点配置
   base: "/docs/",
   title: "前端开发文档",
   description: "前端开发文档",
   open: true,
-
+  bundler: viteBundler({
+    viteOptions: {
+    },
+  }),
   // 主题和它的配置
-  theme: path.resolve(__dirname, "./theme"),
-  themeConfig: {
+  theme: localTheme({
+    // 默认主题配置项
     logo: "https://vuejs.org/images/logo.png",
     navbar: [
       {
@@ -42,22 +47,18 @@ export default defineUserConfig<DefaultThemeOptions>({
     repo: "https://github.com/javascriptfield/docs",
     repoLabel: "GitHub",
     sidebar: "auto",
-  },
+  }),
   plugins: [
-    ["@vuepress/plugin-search",{
-      maxSuggestions: 10,
-      // 允许搜索 Frontmatter 中的 `tags`
-      getExtraFields: (page) => page.frontmatter.tags ?? [],
-    },],
     [
-      '@vuepress/register-components',
-      {
-        componentsDir: path.resolve(__dirname, './components'),
-      },
+      searchPlugin({
+        maxSuggestions: 10,
+        // 允许搜索 Frontmatter 中的 `tags`
+        getExtraFields: (page) => page.frontmatter.tags ?? [],
+      }),
     ],
+    registerComponentsPlugin({
+      // 配置项
+        componentsDir: path.resolve(__dirname, "./components"),
+    }),
   ],
-  clientAppEnhanceFiles: path.resolve(
-    __dirname,
-    './clientAppEnhance.ts'
-  ),
 });
