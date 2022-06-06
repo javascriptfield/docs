@@ -1,9 +1,9 @@
 ---
 home: true
-heroText: 前端开发文档
+heroText: Front-end Knowledge Base
 tagline: null
 actions:
-  - text: 快速上手 →
+  - text: Get start →
     link: /pages/62e711/
 features:
 - title: 前端工程化
