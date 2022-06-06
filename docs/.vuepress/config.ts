@@ -6,18 +6,18 @@ const {
   registerComponentsPlugin,
 } = require("@vuepress/plugin-register-components");
 const dirTree = require("directory-tree");
-const tree = dirTree("/docs/docs", {
+const tree = dirTree(path.resolve(__dirname, "../../docs/"), {
   extensions: /\.md/,
   exclude: /\.vuepress|README.md/,
   normalizePath: true,
 });
-console.log('tree: ', tree);
 const navbar = tree.children.map((e) => {
   return {
     text: e.name,
-    link: e.children[0].path.replace("/docs/docs", ""),
+    link: e.children[0].path.replace(/(.*)\/docs/, ""),
   };
 });
+console.log('navbar: ', navbar);
 const sidebar = tree.children.map(e => {
   return {
     [`/${e.name}/`]: [{
