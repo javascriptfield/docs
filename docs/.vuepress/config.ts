@@ -17,28 +17,31 @@ const navbar = tree.children.map((e) => {
     link: e.children[0].path.replace(/(.*)\/docs/, ""),
   };
 });
-console.log('navbar: ', navbar);
-const sidebar = tree.children.map(e => {
-  return {
-    [`/${e.name}/`]: [{
-      children: e.children.map(child => {
-        return {
-          text: child.name.replace(".md", ""),
-          collapsible: true,
-          link: child.path.replace(/(.*)\/docs/, "")
-        }
-      })
-    }],
-  };
-}).reduce((acc,cur) => {
-  const result = Object.assign(acc, cur)
-  return result
-}, {})
+const sidebar = tree.children
+  .map((e) => {
+    return {
+      [`/${e.name}/`]: [
+        {
+          children: e.children.map((child) => {
+            return {
+              text: child.name.replace(".md", ""),
+              collapsible: true,
+              link: child.path.replace(/(.*)\/docs/, ""),
+            };
+          }),
+        },
+      ],
+    };
+  })
+  .reduce((acc, cur) => {
+    const result = Object.assign(acc, cur);
+    return result;
+  }, {});
 export default defineUserConfig({
   // 站点配置
   base: "/docs/",
   title: "Front-end",
-  head: [['link', { rel: 'icon', href: '/images/favicon.ico' }]],
+  head: [["link", { rel: "icon", href: "/docs/images/favicon.ico" }]],
   // 主题和它的配置
   theme: localTheme({
     // 默认主题配置项
@@ -48,7 +51,7 @@ export default defineUserConfig({
     repoLabel: "GitHub",
     sidebar: sidebar,
     editLink: false,
-    sidebarDepth: 1
+    sidebarDepth: 1,
   }),
   plugins: [
     [
