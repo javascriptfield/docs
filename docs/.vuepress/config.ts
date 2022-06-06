@@ -25,7 +25,7 @@ const sidebar = tree.children.map(e => {
         return {
           text: child.name.replace(".md", ""),
           collapsible: true,
-          link: child.path.replace("/docs/docs", "")
+          link: child.path.replace(/(.*)\/docs/, "")
         }
       })
     }],
