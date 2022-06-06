@@ -11,6 +11,7 @@ const tree = dirTree("/docs/docs", {
   exclude: /\.vuepress|README.md/,
   normalizePath: true,
 });
+console.log('tree: ', tree);
 const navbar = tree.children.map((e) => {
   return {
     text: e.name,
