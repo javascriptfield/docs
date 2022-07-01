@@ -1,6 +1,5 @@
 ---
 title: 如何根据系统主题自动响应CSS深色模式
-date: 2022-02-09 09:41:18
 
 categories:
   - CSS
