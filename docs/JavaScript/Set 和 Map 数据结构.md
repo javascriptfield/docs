@@ -1,12 +1,10 @@
 ---
 title: Set 和 Map 数据结构
-date: 2022-02-07 12:20:21
 
 categories:
-  - docs
   - ES6
 tags:
-  - 
+  -
 ---
 
 # Set 和 Map 数据结构
@@ -22,14 +20,16 @@ ES6 提供了新的数据结构 Set。它**类似于数组，但是成员的值�
 ```javascript
 const s = new Set();
 
-[2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+[2, 3, 5, 4, 5, 2, 2].forEach((x) => s.add(x));
 
 for (let i of s) {
   console.log(i);
 }
 // 2 3 5 4
 ```
+
 <!-- more -->
+
 上面代码通过`add()`方法向 Set 结构加入成员，结果表明 Set 结构不会添加重复的值。
 
 **`Set`函数可以接受一个数组（或者具有 iterable 接口的其他数据结构）作为参数，用来初始化**。
@@ -37,23 +37,21 @@ for (let i of s) {
 ```javascript
 // 例一
 const set = new Set([1, 2, 3, 4, 4]);
-[...set]
+[...set];
 // [1, 2, 3, 4]
 
 // 例二
 const items = new Set([1, 2, 3, 4, 5, 5, 5, 5]);
-items.size // 5
+items.size; // 5
 
 // 例三
-const set = new Set(document.querySelectorAll('div'));
-set.size // 56
+const set = new Set(document.querySelectorAll("div"));
+set.size; // 56
 
 // 类似于
 const set = new Set();
-document
- .querySelectorAll('div')
- .forEach(div => set.add(div));
-set.size // 56
+document.querySelectorAll("div").forEach((div) => set.add(div));
+set.size; // 56
 ```
 
 上面代码中，例一和例二都是`Set`函数接受数组作为参数，例三是接受类似数组的对象作为参数。
@@ -62,13 +60,13 @@ set.size // 56
 
 ```javascript
 // 去除数组的重复成员
-[...new Set(array)]
+[...new Set(array)];
 ```
 
 上面的方法也可以用于，**去除字符串里面的重复字符**。
 
 ```javascript
-[...new Set('ababbc')].join('')
+[...new Set("ababbc")].join("");
 // "abc"
 ```
 
@@ -80,7 +78,7 @@ let a = NaN;
 let b = NaN;
 set.add(a);
 set.add(b);
-set // Set {NaN}
+set; // Set {NaN}
 ```
 
 上面代码向 Set 实例添加了两次`NaN`，但是只会加入一个。这表明，在 Set 内部，两个`NaN`是相等的。
@@ -91,10 +89,10 @@ set // Set {NaN}
 let set = new Set();
 
 set.add({});
-set.size // 1
+set.size; // 1
 
 set.add({});
-set.size // 2
+set.size; // 2
 ```
 
 上面代码表示，由于两个空对象不相等，所以它们被视为两个值。
@@ -119,14 +117,14 @@ Set 实例的方法分为两大类：操作方法（用于操作数据）和遍�
 s.add(1).add(2).add(2);
 // 注意2被加入了两次
 
-s.size // 2
+s.size; // 2
 
-s.has(1) // true
-s.has(2) // true
-s.has(3) // false
+s.has(1); // true
+s.has(2); // true
+s.has(3); // false
 
 s.delete(2);
-s.has(2) // false
+s.has(2); // false
 ```
 
 下面是一个对比，看看在判断是否包括一个键上面，`Object`结构和`Set`结构的写法不同。
@@ -134,8 +132,8 @@ s.has(2) // false
 ```javascript
 // 对象的写法
 const properties = {
-  'width': 1,
-  'height': 1
+  width: 1,
+  height: 1,
 };
 
 if (properties[someName]) {
@@ -145,8 +143,8 @@ if (properties[someName]) {
 // Set的写法
 const properties = new Set();
 
-properties.add('width');
-properties.add('height');
+properties.add("width");
+properties.add("height");
 
 if (properties.has(someName)) {
   // do something
@@ -167,7 +165,7 @@ function dedupe(array) {
   return Array.from(new Set(array));
 }
 
-dedupe([1, 1, 2, 3]) // [1, 2, 3]
+dedupe([1, 1, 2, 3]); // [1, 2, 3]
 ```
 
 ### 遍历操作
@@ -186,7 +184,7 @@ Set 结构的实例有四个遍历方法，可以用于遍历成员。
 `keys`方法、`values`方法、`entries`方法返回的都是遍历器对象（详见《Iterator 对象》一章）。由于 Set 结构没有键名，只有键值（或者说键名和键值是同一个值），**所以`keys`方法和`values`方法的行为完全一致**。
 
 ```javascript
-let set = new Set(['red', 'green', 'blue']);
+let set = new Set(["red", "green", "blue"]);
 
 for (let item of set.keys()) {
   console.log(item);
@@ -215,14 +213,14 @@ for (let item of set.entries()) {
 Set 结构的实例默认可遍历，它的默认遍历器生成函数就是它的`values`方法。
 
 ```javascript
-Set.prototype[Symbol.iterator] === Set.prototype.values
+Set.prototype[Symbol.iterator] === Set.prototype.values;
 // true
 ```
 
 这意味着，可以**省略`values`方法，直接用`for...of`循环遍历 Set**。
 
 ```javascript
-let set = new Set(['red', 'green', 'blue']);
+let set = new Set(["red", "green", "blue"]);
 
 for (let x of set) {
   console.log(x);
@@ -238,7 +236,7 @@ Set 结构的实例与数组一样，也拥有`forEach`方法，用于对每个�
 
 ```javascript
 let set = new Set([1, 4, 9]);
-set.forEach((value, key) => console.log(key + ' : ' + value))
+set.forEach((value, key) => console.log(key + " : " + value));
 // 1 : 1
 // 4 : 4
 // 9 : 9
@@ -253,7 +251,7 @@ set.forEach((value, key) => console.log(key + ' : ' + value))
 扩展运算符（`...`）内部使用`for...of`循环，所以也可以用于 Set 结构。
 
 ```javascript
-let set = new Set(['red', 'green', 'blue']);
+let set = new Set(["red", "green", "blue"]);
 let arr = [...set];
 // ['red', 'green', 'blue']
 ```
@@ -270,11 +268,11 @@ let unique = [...new Set(arr)];
 
 ```javascript
 let set = new Set([1, 2, 3]);
-set = new Set([...set].map(x => x * 2));
+set = new Set([...set].map((x) => x * 2));
 // 返回Set结构：{2, 4, 6}
 
 let set = new Set([1, 2, 3, 4, 5]);
-set = new Set([...set].filter(x => (x % 2) == 0));
+set = new Set([...set].filter((x) => x % 2 == 0));
 // 返回Set结构：{2, 4}
 ```
 
@@ -289,11 +287,11 @@ let union = new Set([...a, ...b]);
 // Set {1, 2, 3, 4}
 
 // 交集
-let intersect = new Set([...a].filter(x => b.has(x)));
+let intersect = new Set([...a].filter((x) => b.has(x)));
 // set {2, 3}
 
 // 差集
-let difference = new Set([...a].filter(x => !b.has(x)));
+let difference = new Set([...a].filter((x) => !b.has(x)));
 // Set {1}
 ```
 
@@ -302,12 +300,12 @@ let difference = new Set([...a].filter(x => !b.has(x)));
 ```javascript
 // 方法一
 let set = new Set([1, 2, 3]);
-set = new Set([...set].map(val => val * 2));
+set = new Set([...set].map((val) => val * 2));
 // set的值是2, 4, 6
 
 // 方法二
 let set = new Set([1, 2, 3]);
-set = new Set(Array.from(set, val => val * 2));
+set = new Set(Array.from(set, (val) => val * 2));
 // set的值是2, 4, 6
 ```
 
@@ -323,9 +321,9 @@ WeakSet 结构与 Set 类似，也是**不重复的值的集合**。但是，它
 
 ```javascript
 const ws = new WeakSet();
-ws.add(1)
+ws.add(1);
 // TypeError: Invalid value used in weak set
-ws.add(Symbol())
+ws.add(Symbol());
 // TypeError: invalid value used in weak set
 ```
 
@@ -350,7 +348,10 @@ const ws = new WeakSet();
 作为构造函数，**WeakSet 可以接受一个数组或类似数组的对象作为参数**。（实际上，任何具有 Iterable 接口的对象，都可以作为 WeakSet 的参数。）该数组的所有成员，都会自动成为 WeakSet 实例对象的成员。
 
 ```javascript
-const a = [[1, 2], [3, 4]];
+const a = [
+  [1, 2],
+  [3, 4],
+];
 const ws = new WeakSet(a);
 // WeakSet {[1, 2], [3, 4]}
 ```
@@ -384,19 +385,21 @@ ws.add(window);
 ws.add(obj);
 
 ws.has(window); // true
-ws.has(foo);    // false
+ws.has(foo); // false
 
 ws.delete(window);
-ws.has(window);    // false
+ws.has(window); // false
 ```
 
 **WeakSet 没有`size`属性**，没有办法遍历它的成员。
 
 ```javascript
-ws.size // undefined
-ws.forEach // undefined
+ws.size; // undefined
+ws.forEach; // undefined
 
-ws.forEach(function(item){ console.log('WeakSet has ' + item)})
+ws.forEach(function (item) {
+  console.log("WeakSet has " + item);
+});
 // TypeError: undefined is not a function
 ```
 
@@ -407,14 +410,14 @@ WeakSet 不能遍历，是因为成员都是弱引用，随时可能消失，遍
 下面是 WeakSet 的另一个例子。
 
 ```javascript
-const foos = new WeakSet()
+const foos = new WeakSet();
 class Foo {
   constructor() {
-    foos.add(this)
+    foos.add(this);
   }
-  method () {
+  method() {
     if (!foos.has(this)) {
-      throw new TypeError('Foo.prototype.method 只能在Foo的实例上调用！');
+      throw new TypeError("Foo.prototype.method 只能在Foo的实例上调用！");
     }
   }
 }
@@ -430,10 +433,10 @@ JavaScript 的对象（Object），本质上是键值对的集合（Hash 结构�
 
 ```javascript
 const data = {};
-const element = document.getElementById('myDiv');
+const element = document.getElementById("myDiv");
 
-data[element] = 'metadata';
-data['[object HTMLDivElement]'] // "metadata"
+data[element] = "metadata";
+data["[object HTMLDivElement]"]; // "metadata"
 ```
 
 上面代码原意是将一个 DOM 节点作为对象`data`的键，但是由于对象只接受字符串作为键名，所以`element`被自动转为字符串`[object HTMLDivElement]`。
@@ -442,14 +445,14 @@ data['[object HTMLDivElement]'] // "metadata"
 
 ```javascript
 const m = new Map();
-const o = {p: 'Hello World'};
+const o = { p: "Hello World" };
 
-m.set(o, 'content')
-m.get(o) // "content"
+m.set(o, "content");
+m.get(o); // "content"
 
-m.has(o) // true
-m.delete(o) // true
-m.has(o) // false
+m.has(o); // true
+m.delete(o); // true
+m.has(o); // false
 ```
 
 上面代码使用 Map 结构的`set`方法，将对象`o`当作`m`的一个键，然后又使用`get`方法读取这个键，接着使用`delete`方法删除了这个键。
@@ -458,15 +461,15 @@ m.has(o) // false
 
 ```javascript
 const map = new Map([
-  ['name', '张三'],
-  ['title', 'Author']
+  ["name", "张三"],
+  ["title", "Author"],
 ]);
 
-map.size // 2
-map.has('name') // true
-map.get('name') // "张三"
-map.has('title') // true
-map.get('title') // "Author"
+map.size; // 2
+map.has("name"); // true
+map.get("name"); // "张三"
+map.has("title"); // true
+map.get("title"); // "Author"
 ```
 
 上面代码在新建 Map 实例时，就指定了两个键`name`和`title`。
@@ -475,30 +478,28 @@ map.get('title') // "Author"
 
 ```javascript
 const items = [
-  ['name', '张三'],
-  ['title', 'Author']
+  ["name", "张三"],
+  ["title", "Author"],
 ];
 
 const map = new Map();
 
-items.forEach(
-  ([key, value]) => map.set(key, value)
-);
+items.forEach(([key, value]) => map.set(key, value));
 ```
 
 事实上，不仅仅是数组，任何具有 Iterator 接口、且每个成员都是一个双元素的数组的数据结构（详见《Iterator》一章）都可以当作`Map`构造函数的参数。这就是说，`Set`和`Map`都可以用来生成新的 Map。
 
 ```javascript
 const set = new Set([
-  ['foo', 1],
-  ['bar', 2]
+  ["foo", 1],
+  ["bar", 2],
 ]);
 const m1 = new Map(set);
-m1.get('foo') // 1
+m1.get("foo"); // 1
 
-const m2 = new Map([['baz', 3]]);
+const m2 = new Map([["baz", 3]]);
 const m3 = new Map(m2);
-m3.get('baz') // 3
+m3.get("baz"); // 3
 ```
 
 上面代码中，我们分别使用 Set 对象和 Map 对象，当作`Map`构造函数的参数，结果都生成了新的 Map 对象。
@@ -508,11 +509,9 @@ m3.get('baz') // 3
 ```javascript
 const map = new Map();
 
-map
-.set(1, 'aaa')
-.set(1, 'bbb');
+map.set(1, "aaa").set(1, "bbb");
 
-map.get(1) // "bbb"
+map.get(1); // "bbb"
 ```
 
 上面代码对键`1`连续赋值两次，后一次的值覆盖前一次的值。
@@ -520,7 +519,7 @@ map.get(1) // "bbb"
 如果读取一个未知的键，则返回`undefined`。
 
 ```javascript
-new Map().get('asfddfsasadf')
+new Map().get("asfddfsasadf");
 // undefined
 ```
 
@@ -529,8 +528,8 @@ new Map().get('asfddfsasadf')
 ```javascript
 const map = new Map();
 
-map.set(['a'], 555);
-map.get(['a']) // undefined
+map.set(["a"], 555);
+map.get(["a"]); // undefined
 ```
 
 上面代码的`set`和`get`方法，表面是针对同一个键，但实际上这是两个不同的数组实例，内存地址是不一样的，因此`get`方法无法读取该键，返回`undefined`。
@@ -540,15 +539,13 @@ map.get(['a']) // undefined
 ```javascript
 const map = new Map();
 
-const k1 = ['a'];
-const k2 = ['a'];
+const k1 = ["a"];
+const k2 = ["a"];
 
-map
-.set(k1, 111)
-.set(k2, 222);
+map.set(k1, 111).set(k2, 222);
 
-map.get(k1) // 111
-map.get(k2) // 222
+map.get(k1); // 111
+map.get(k2); // 222
 ```
 
 上面代码中，变量`k1`和`k2`的值是一样的，但是它们在 Map 结构中被视为两个键。
@@ -561,18 +558,18 @@ map.get(k2) // 222
 let map = new Map();
 
 map.set(-0, 123);
-map.get(+0) // 123
+map.get(+0); // 123
 
 map.set(true, 1);
-map.set('true', 2);
-map.get(true) // 1
+map.set("true", 2);
+map.get(true); // 1
 
 map.set(undefined, 3);
 map.set(null, 4);
-map.get(undefined) // 3
+map.get(undefined); // 3
 
 map.set(NaN, 123);
-map.get(NaN) // 123
+map.get(NaN); // 123
 ```
 
 ### 实例的属性和操作方法
@@ -585,10 +582,10 @@ Map 结构的实例有以下属性和操作方法。
 
 ```javascript
 const map = new Map();
-map.set('foo', true);
-map.set('bar', false);
+map.set("foo", true);
+map.set("bar", false);
 
-map.size // 2
+map.size; // 2
 ```
 
 **（2）Map.prototype.set(key, value)**
@@ -598,18 +595,15 @@ map.size // 2
 ```javascript
 const m = new Map();
 
-m.set('edition', 6)        // 键是字符串
-m.set(262, 'standard')     // 键是数值
-m.set(undefined, 'nah')    // 键是 undefined
+m.set("edition", 6); // 键是字符串
+m.set(262, "standard"); // 键是数值
+m.set(undefined, "nah"); // 键是 undefined
 ```
 
 `set`方法返回的是当前的`Map`对象，因此可以采用链式写法。
 
 ```javascript
-let map = new Map()
-  .set(1, 'a')
-  .set(2, 'b')
-  .set(3, 'c');
+let map = new Map().set(1, "a").set(2, "b").set(3, "c");
 ```
 
 **（3）Map.prototype.get(key)**
@@ -619,10 +613,12 @@ let map = new Map()
 ```javascript
 const m = new Map();
 
-const hello = function() {console.log('hello');};
-m.set(hello, 'Hello ES6!') // 键是函数
+const hello = function () {
+  console.log("hello");
+};
+m.set(hello, "Hello ES6!"); // 键是函数
 
-m.get(hello)  // Hello ES6!
+m.get(hello); // Hello ES6!
 ```
 
 **（4）Map.prototype.has(key)**
@@ -632,14 +628,14 @@ m.get(hello)  // Hello ES6!
 ```javascript
 const m = new Map();
 
-m.set('edition', 6);
-m.set(262, 'standard');
-m.set(undefined, 'nah');
+m.set("edition", 6);
+m.set(262, "standard");
+m.set(undefined, "nah");
 
-m.has('edition')     // true
-m.has('years')       // false
-m.has(262)           // true
-m.has(undefined)     // true
+m.has("edition"); // true
+m.has("years"); // false
+m.has(262); // true
+m.has(undefined); // true
 ```
 
 **（5）Map.prototype.delete(key)**
@@ -648,11 +644,11 @@ m.has(undefined)     // true
 
 ```javascript
 const m = new Map();
-m.set(undefined, 'nah');
-m.has(undefined)     // true
+m.set(undefined, "nah");
+m.has(undefined); // true
 
-m.delete(undefined)
-m.has(undefined)       // false
+m.delete(undefined);
+m.has(undefined); // false
 ```
 
 **（6）Map.prototype.clear()**
@@ -661,12 +657,12 @@ m.has(undefined)       // false
 
 ```javascript
 let map = new Map();
-map.set('foo', true);
-map.set('bar', false);
+map.set("foo", true);
+map.set("bar", false);
 
-map.size // 2
-map.clear()
-map.size // 0
+map.size; // 2
+map.clear();
+map.size; // 0
 ```
 
 ### 遍历方法
@@ -682,8 +678,8 @@ Map 结构原生提供三个遍历器生成函数和一个遍历方法。
 
 ```javascript
 const map = new Map([
-  ['F', 'no'],
-  ['T',  'yes'],
+  ["F", "no"],
+  ["T", "yes"],
 ]);
 
 for (let key of map.keys()) {
@@ -722,7 +718,7 @@ for (let [key, value] of map) {
 上面代码最后的那个例子，表示 Map 结构的默认遍历器接口（`Symbol.iterator`属性），就是`entries`方法。
 
 ```javascript
-map[Symbol.iterator] === map.entries
+map[Symbol.iterator] === map.entries;
 // true
 ```
 
@@ -751,26 +747,19 @@ const map = new Map([
 结合数组的`map`方法、`filter`方法，可以实现 Map 的遍历和过滤（Map 本身没有`map`和`filter`方法）。
 
 ```javascript
-const map0 = new Map()
-  .set(1, 'a')
-  .set(2, 'b')
-  .set(3, 'c');
+const map0 = new Map().set(1, "a").set(2, "b").set(3, "c");
 
-const map1 = new Map(
-  [...map0].filter(([k, v]) => k < 3)
-);
+const map1 = new Map([...map0].filter(([k, v]) => k < 3));
 // 产生 Map 结构 {1 => 'a', 2 => 'b'}
 
-const map2 = new Map(
-  [...map0].map(([k, v]) => [k * 2, '_' + v])
-    );
+const map2 = new Map([...map0].map(([k, v]) => [k * 2, "_" + v]));
 // 产生 Map 结构 {2 => '_a', 4 => '_b', 6 => '_c'}
 ```
 
 此外，Map 还有一个`forEach`方法，与数组的`forEach`方法类似，也可以实现遍历。
 
 ```javascript
-map.forEach(function(value, key, map) {
+map.forEach(function (value, key, map) {
   console.log("Key: %s, Value: %s", key, value);
 });
 ```
@@ -779,12 +768,12 @@ map.forEach(function(value, key, map) {
 
 ```javascript
 const reporter = {
-  report: function(key, value) {
+  report: function (key, value) {
     console.log("Key: %s, Value: %s", key, value);
-  }
+  },
 };
 
-map.forEach(function(value, key, map) {
+map.forEach(function (value, key, map) {
   this.report(key, value);
 }, reporter);
 ```
@@ -798,10 +787,8 @@ map.forEach(function(value, key, map) {
 前面已经提过，Map 转为数组最方便的方法，就是使用扩展运算符（`...`）。
 
 ```javascript
-const myMap = new Map()
-  .set(true, 7)
-  .set({foo: 3}, ['abc']);
-[...myMap]
+const myMap = new Map().set(true, 7).set({ foo: 3 }, ["abc"]);
+[...myMap];
 // [ [ true, 7 ], [ { foo: 3 }, [ 'abc' ] ] ]
 ```
 
@@ -812,8 +799,8 @@ const myMap = new Map()
 ```javascript
 new Map([
   [true, 7],
-  [{foo: 3}, ['abc']]
-])
+  [{ foo: 3 }, ["abc"]],
+]);
 // Map {
 //   true => 7,
 //   Object {foo: 3} => ['abc']
@@ -827,16 +814,14 @@ new Map([
 ```javascript
 function strMapToObj(strMap) {
   let obj = Object.create(null);
-  for (let [k,v] of strMap) {
+  for (let [k, v] of strMap) {
     obj[k] = v;
   }
   return obj;
 }
 
-const myMap = new Map()
-  .set('yes', true)
-  .set('no', false);
-strMapToObj(myMap)
+const myMap = new Map().set("yes", true).set("no", false);
+strMapToObj(myMap);
 // { yes: true, no: false }
 ```
 
@@ -853,7 +838,7 @@ function objToStrMap(obj) {
   return strMap;
 }
 
-objToStrMap({yes: true, no: false})
+objToStrMap({ yes: true, no: false });
 // Map {"yes" => true, "no" => false}
 ```
 
@@ -866,8 +851,8 @@ function strMapToJson(strMap) {
   return JSON.stringify(strMapToObj(strMap));
 }
 
-let myMap = new Map().set('yes', true).set('no', false);
-strMapToJson(myMap)
+let myMap = new Map().set("yes", true).set("no", false);
+strMapToJson(myMap);
 // '{"yes":true,"no":false}'
 ```
 
@@ -878,8 +863,8 @@ function mapToArrayJson(map) {
   return JSON.stringify([...map]);
 }
 
-let myMap = new Map().set(true, 7).set({foo: 3}, ['abc']);
-mapToArrayJson(myMap)
+let myMap = new Map().set(true, 7).set({ foo: 3 }, ["abc"]);
+mapToArrayJson(myMap);
 // '[[true,7],[{"foo":3},["abc"]]]'
 ```
 
@@ -892,7 +877,7 @@ function jsonToStrMap(jsonStr) {
   return objToStrMap(JSON.parse(jsonStr));
 }
 
-jsonToStrMap('{"yes": true, "no": false}')
+jsonToStrMap('{"yes": true, "no": false}');
 // Map {'yes' => true, 'no' => false}
 ```
 
@@ -903,7 +888,7 @@ function jsonToMap(jsonStr) {
   return new Map(JSON.parse(jsonStr));
 }
 
-jsonToMap('[[true,7],[{"foo":3},["abc"]]]')
+jsonToMap('[[true,7],[{"foo":3},["abc"]]]');
 // Map {true => 7, Object {foo: 3} => ['abc']}
 ```
 
@@ -916,16 +901,19 @@ jsonToMap('[[true,7],[{"foo":3},["abc"]]]')
 ```javascript
 // WeakMap 可以使用 set 方法添加成员
 const wm1 = new WeakMap();
-const key = {foo: 1};
+const key = { foo: 1 };
 wm1.set(key, 2);
-wm1.get(key) // 2
+wm1.get(key); // 2
 
 // WeakMap 也可以接受一个数组，
 // 作为构造函数的参数
 const k1 = [1, 2, 3];
 const k2 = [4, 5, 6];
-const wm2 = new WeakMap([[k1, 'foo'], [k2, 'bar']]);
-wm2.get(k2) // "bar"
+const wm2 = new WeakMap([
+  [k1, "foo"],
+  [k2, "bar"],
+]);
+wm2.get(k2); // "bar"
 ```
 
 `WeakMap`与`Map`的区别有两点。
@@ -934,11 +922,11 @@ wm2.get(k2) // "bar"
 
 ```javascript
 const map = new WeakMap();
-map.set(1, 2)
+map.set(1, 2);
 // TypeError: 1 is not an object!
-map.set(Symbol(), 2)
+map.set(Symbol(), 2);
 // TypeError: Invalid value used as weak map key
-map.set(null, 2)
+map.set(null, 2);
 // TypeError: Invalid value used as weak map key
 ```
 
@@ -949,11 +937,11 @@ map.set(null, 2)
 `WeakMap`的设计目的在于，有时我们想在某个对象上面存放一些数据，但是这会形成对于这个对象的引用。请看下面的例子。
 
 ```javascript
-const e1 = document.getElementById('foo');
-const e2 = document.getElementById('bar');
+const e1 = document.getElementById("foo");
+const e2 = document.getElementById("bar");
 const arr = [
-  [e1, 'foo 元素'],
-  [e2, 'bar 元素'],
+  [e1, "foo 元素"],
+  [e2, "bar 元素"],
 ];
 ```
 
@@ -964,8 +952,8 @@ const arr = [
 ```javascript
 // 不需要 e1 和 e2 的时候
 // 必须手动删除引用
-arr [0] = null;
-arr [1] = null;
+arr[0] = null;
+arr[1] = null;
 ```
 
 上面这样的写法显然很不方便。一旦忘了写，就会造成内存泄露。
@@ -977,10 +965,10 @@ WeakMap 就是为了解决这个问题而诞生的，它的键名所引用的对
 ```javascript
 const wm = new WeakMap();
 
-const element = document.getElementById('example');
+const element = document.getElementById("example");
 
-wm.set(element, 'some information');
-wm.get(element) // "some information"
+wm.set(element, "some information");
+wm.get(element); // "some information"
 ```
 
 上面代码中，先新建一个 Weakmap 实例。然后，将一个 DOM 节点作为键名存入该实例，并将一些附加信息作为键值，一起存放在 WeakMap 里面。这时，WeakMap 里面对`element`的引用就是弱引用，不会被计入垃圾回收机制。
@@ -994,11 +982,11 @@ wm.get(element) // "some information"
 ```javascript
 const wm = new WeakMap();
 let key = {};
-let obj = {foo: 1};
+let obj = { foo: 1 };
 
 wm.set(key, obj);
 obj = null;
-wm.get(key)
+wm.get(key);
 // Object {foo: 1}
 ```
 
@@ -1012,9 +1000,9 @@ WeakMap 与 Map 在 API 上的区别主要是两个，一是没有遍历操作�
 const wm = new WeakMap();
 
 // size、forEach、clear 方法都不存在
-wm.size // undefined
-wm.forEach // undefined
-wm.clear // undefined
+wm.size; // undefined
+wm.forEach; // undefined
+wm.clear; // undefined
 ```
 
 ### WeakMap 的示例
@@ -1094,15 +1082,19 @@ undefined
 前文说过，WeakMap 应用的典型场合就是 DOM 节点作为键名。下面是一个例子。
 
 ```javascript
-let myElement = document.getElementById('logo');
+let myElement = document.getElementById("logo");
 let myWeakmap = new WeakMap();
 
-myWeakmap.set(myElement, {timesClicked: 0});
+myWeakmap.set(myElement, { timesClicked: 0 });
 
-myElement.addEventListener('click', function() {
-  let logoData = myWeakmap.get(myElement);
-  logoData.timesClicked++;
-}, false);
+myElement.addEventListener(
+  "click",
+  function () {
+    let logoData = myWeakmap.get(myElement);
+    logoData.timesClicked++;
+  },
+  false
+);
 ```
 
 上面代码中，`myElement`是一个 DOM 节点，每当发生`click`事件，就更新一下状态。我们将这个状态作为键值放在 WeakMap 里，对应的键名就是`myElement`。一旦这个 DOM 节点删除，该状态就会自动消失，不存在内存泄漏风险。
@@ -1129,10 +1121,10 @@ class Countdown {
   }
 }
 
-const c = new Countdown(2, () => console.log('DONE'));
+const c = new Countdown(2, () => console.log("DONE"));
 
-c.dec()
-c.dec()
+c.dec();
+c.dec();
 // DONE
 ```
 

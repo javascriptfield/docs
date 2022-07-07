@@ -1,12 +1,10 @@
 ---
 title: Class 的基本语法
-date: 2022-02-07 12:20:21
 
 categories:
-  - docs
   - ES6
 tags:
-  - 
+  -
 ---
 
 # Class 的基本语法
@@ -24,12 +22,14 @@ function Point(x, y) {
 }
 
 Point.prototype.toString = function () {
-  return '(' + this.x + ', ' + this.y + ')';
+  return "(" + this.x + ", " + this.y + ")";
 };
 
 var p = new Point(1, 2);
 ```
+
 <!-- more -->
+
 上面这种写法跟传统的面向对象语言（比如 C++ 和 Java）差异很大，很容易让新学习这门语言的程序员感到困惑。
 
 ES6 提供了更接近传统语言的写法，引入了 Class（类）这个概念，作为对象的模板。通过`class`关键字，可以定义类。
@@ -44,7 +44,7 @@ class Point {
   }
 
   toString() {
-    return '(' + this.x + ', ' + this.y + ')';
+    return "(" + this.x + ", " + this.y + ")";
   }
 }
 ```
@@ -60,8 +60,8 @@ class Point {
   // ...
 }
 
-typeof Point // "function"
-Point === Point.prototype.constructor // true
+typeof Point; // "function"
+Point === Point.prototype.constructor; // true
 ```
 
 上面代码表明，类的数据类型就是函数，类本身就指向构造函数。
@@ -71,12 +71,12 @@ Point === Point.prototype.constructor // true
 ```javascript
 class Bar {
   doStuff() {
-    console.log('stuff');
+    console.log("stuff");
   }
 }
 
 var b = new Bar();
-b.doStuff() // "stuff"
+b.doStuff(); // "stuff"
 ```
 
 构造函数的`prototype`属性，在 ES6 的“类”上面继续存在。事实上，**类的所有方法都定义在类的`prototype`属性上面。**
@@ -111,7 +111,7 @@ Point.prototype = {
 class B {}
 let b = new B();
 
-b.constructor === B.prototype.constructor // true
+b.constructor === B.prototype.constructor; // true
 ```
 
 上面代码中，`b`是`B`类的实例，它的`constructor`方法就是`B`类原型的`constructor`方法。
@@ -120,21 +120,21 @@ b.constructor === B.prototype.constructor // true
 
 ```javascript
 class Point {
-  constructor(){
+  constructor() {
     // ...
   }
 }
 
 Object.assign(Point.prototype, {
-  toString(){},
-  toValue(){}
+  toString() {},
+  toValue() {},
 });
 ```
 
 `prototype`对象的`constructor`属性，直接指向“类”的本身，这与 ES5 的行为是一致的。
 
 ```javascript
-Point.prototype.constructor === Point // true
+Point.prototype.constructor === Point; // true
 ```
 
 另外，**类的内部所有定义的方法，都是不可枚举的**（non-enumerable）。
@@ -150,9 +150,9 @@ class Point {
   }
 }
 
-Object.keys(Point.prototype)
+Object.keys(Point.prototype);
 // []
-Object.getOwnPropertyNames(Point.prototype)
+Object.getOwnPropertyNames(Point.prototype);
 // ["constructor","toString"]
 ```
 
@@ -163,13 +163,13 @@ var Point = function (x, y) {
   // ...
 };
 
-Point.prototype.toString = function() {
+Point.prototype.toString = function () {
   // ...
 };
 
-Object.keys(Point.prototype)
+Object.keys(Point.prototype);
 // ["toString"]
-Object.getOwnPropertyNames(Point.prototype)
+Object.getOwnPropertyNames(Point.prototype);
 // ["constructor","toString"]
 ```
 
@@ -180,8 +180,7 @@ Object.getOwnPropertyNames(Point.prototype)
 `constructor`方法是类的默认方法，**通过`new`命令生成对象实例时，自动调用该方法**。一个类必须有`constructor`方法，如果没有显式定义，一个空的`constructor`方法会被默认添加。
 
 ```javascript
-class Point {
-}
+class Point {}
 
 // 等同于
 class Point {
@@ -200,7 +199,7 @@ class Foo {
   }
 }
 
-new Foo() instanceof Foo
+new Foo() instanceof Foo;
 // false
 ```
 
@@ -215,7 +214,7 @@ class Foo {
   }
 }
 
-Foo()
+Foo();
 // TypeError: Class constructor Foo cannot be invoked without 'new'
 ```
 
@@ -240,26 +239,26 @@ var point = new Point(2, 3);
 ```javascript
 //定义类
 class Point {
-
-  constructor(x, y) { // constructor属性定义在原型上
+  constructor(x, y) {
+    // constructor属性定义在原型上
     this.x = x; // x属性定义在实例上
     this.y = y; // y属性定义在实例上
   }
 
-  toString() { // toString属性定义在原型上
-    return '(' + this.x + ', ' + this.y + ')';
+  toString() {
+    // toString属性定义在原型上
+    return "(" + this.x + ", " + this.y + ")";
   }
-
 }
 
 var point = new Point(2, 3);
 
-point.toString() // (2, 3)
+point.toString(); // (2, 3)
 
-point.hasOwnProperty('x') // true
-point.hasOwnProperty('y') // true
-point.hasOwnProperty('toString') // false
-point.__proto__.hasOwnProperty('toString') // true
+point.hasOwnProperty("x"); // true
+point.hasOwnProperty("y"); // true
+point.hasOwnProperty("toString"); // false
+point.__proto__.hasOwnProperty("toString"); // true
 ```
 
 上面代码中，`x`和`y`都是实例对象`point`自身的属性（因为定义在`this`变量上），所以`hasOwnProperty`方法返回`true`，而`toString`是原型对象的属性（因为定义在`Point`类上），所以`hasOwnProperty`方法返回`false`。这些都与 ES5 的行为保持一致。
@@ -267,10 +266,10 @@ point.__proto__.hasOwnProperty('toString') // true
 与 ES5 一样，类的所有实例共享一个原型对象。
 
 ```javascript
-var p1 = new Point(2,3);
-var p2 = new Point(3,2);
+var p1 = new Point(2, 3);
+var p2 = new Point(3, 2);
 
-p1.__proto__ === p2.__proto__
+p1.__proto__ === p2.__proto__;
 //true
 ```
 
@@ -281,16 +280,18 @@ p1.__proto__ === p2.__proto__
 > `__proto__` 并不是语言本身的特性，这是各大厂商具体实现时添加的私有属性，虽然目前很多现代浏览器的 JS 引擎中都提供了这个私有属性，但依旧不建议在生产中使用该属性，避免对环境产生依赖。生产环境中，我们可以使用 `Object.getPrototypeOf` 方法来获取实例对象的原型，然后再来为原型添加方法/属性。
 
 ```javascript
-var p1 = new Point(2,3);
-var p2 = new Point(3,2);
+var p1 = new Point(2, 3);
+var p2 = new Point(3, 2);
 
-p1.__proto__.printName = function () { return 'Oops' };
+p1.__proto__.printName = function () {
+  return "Oops";
+};
 
-p1.printName() // "Oops"
-p2.printName() // "Oops"
+p1.printName(); // "Oops"
+p2.printName(); // "Oops"
 
-var p3 = new Point(4,2);
-p3.printName() // "Oops"
+var p3 = new Point(4, 2);
+p3.printName(); // "Oops"
 ```
 
 上面代码在`p1`的原型上添加了一个`printName`方法，由于`p1`的原型就是`p2`的原型，因此`p2`也可以调用这个方法。而且，此后新建的实例`p3`也可以调用这个方法。这意味着，使用实例的`__proto__`属性改写原型，必须相当谨慎，不推荐使用，因为这会改变“类”的原始定义，影响到所有实例。
@@ -305,10 +306,10 @@ class MyClass {
     // ...
   }
   get prop() {
-    return 'getter';
+    return "getter";
   }
   set prop(value) {
-    console.log('setter: '+value);
+    console.log("setter: " + value);
   }
 }
 
@@ -317,7 +318,7 @@ let inst = new MyClass();
 inst.prop = 123;
 // setter: 123
 
-inst.prop
+inst.prop;
 // 'getter'
 ```
 
@@ -341,11 +342,12 @@ class CustomHTMLElement {
 }
 
 var descriptor = Object.getOwnPropertyDescriptor(
-  CustomHTMLElement.prototype, "html"
+  CustomHTMLElement.prototype,
+  "html"
 );
 
-"get" in descriptor  // true
-"set" in descriptor  // true
+"get" in descriptor; // true
+"set" in descriptor; // true
 ```
 
 上面代码中，存值函数和取值函数是定义在`html`属性的描述对象上面，这与 ES5 完全一致。
@@ -355,7 +357,7 @@ var descriptor = Object.getOwnPropertyDescriptor(
 类的属性名，可以采用表达式。
 
 ```javascript
-let methodName = 'getArea';
+let methodName = "getArea";
 
 class Square {
   constructor(length) {
@@ -386,8 +388,8 @@ const MyClass = class Me {
 
 ```javascript
 let inst = new MyClass();
-inst.getClassName() // Me
-Me.name // ReferenceError: Me is not defined
+inst.getClassName(); // Me
+Me.name; // ReferenceError: Me is not defined
 ```
 
 上面代码表示，`Me`只在 Class 内部有定义。
@@ -395,13 +397,15 @@ Me.name // ReferenceError: Me is not defined
 如果类的内部没用到的话，可以省略`Me`，也就是可以写成下面的形式。
 
 ```javascript
-const MyClass = class { /* ... */ };
+const MyClass = class {
+  /* ... */
+};
 ```
 
 采用 Class 表达式，可以写出立即执行的 Class。
 
 ```javascript
-let person = new class {
+let person = new (class {
   constructor(name) {
     this.name = name;
   }
@@ -409,7 +413,7 @@ let person = new class {
   sayName() {
     console.log(this.name);
   }
-}('张三');
+})("张三");
 
 person.sayName(); // "张三"
 ```
@@ -436,8 +440,7 @@ class Foo {}
 ```javascript
 {
   let Foo = class {};
-  class Bar extends Foo {
-  }
+  class Bar extends Foo {}
 }
 ```
 
@@ -449,7 +452,7 @@ class Foo {}
 
 ```javascript
 class Point {}
-Point.name // "Point"
+Point.name; // "Point"
 ```
 
 `name`属性总是返回紧跟在`class`关键字后面的类名。
@@ -463,14 +466,14 @@ class Foo {
   constructor(...args) {
     this.args = args;
   }
-  * [Symbol.iterator]() {
+  *[Symbol.iterator]() {
     for (let arg of this.args) {
       yield arg;
     }
   }
 }
 
-for (let x of new Foo('hello', 'world')) {
+for (let x of new Foo("hello", "world")) {
   console.log(x);
 }
 // hello
@@ -485,7 +488,7 @@ for (let x of new Foo('hello', 'world')) {
 
 ```javascript
 class Logger {
-  printName(name = 'there') {
+  printName(name = "there") {
     this.print(`Hello ${name}`);
   }
 
@@ -523,7 +526,7 @@ class Obj {
 }
 
 const myObj = new Obj();
-myObj.getThis() === myObj // true
+myObj.getThis() === myObj; // true
 ```
 
 箭头函数内部的`this`总是指向定义时所在的对象。上面代码中，箭头函数位于构造函数内部，它的定义生效的时候，是在构造函数执行的时候。这时，箭头函数所在的运行环境，肯定是实例对象，所以`this`会总是指向实例对象。
@@ -531,19 +534,19 @@ myObj.getThis() === myObj // true
 还有一种解决方法是使用`Proxy`，获取方法的时候，自动绑定`this`。
 
 ```javascript
-function selfish (target) {
+function selfish(target) {
   const cache = new WeakMap();
   const handler = {
-    get (target, key) {
+    get(target, key) {
       const value = Reflect.get(target, key);
-      if (typeof value !== 'function') {
+      if (typeof value !== "function") {
         return value;
       }
       if (!cache.has(value)) {
         cache.set(value, value.bind(target));
       }
       return cache.get(value);
-    }
+    },
   };
   const proxy = new Proxy(target, handler);
   return proxy;
@@ -559,14 +562,14 @@ const logger = selfish(new Logger());
 ```javascript
 class Foo {
   static classMethod() {
-    return 'hello';
+    return "hello";
   }
 }
 
-Foo.classMethod() // 'hello'
+Foo.classMethod(); // 'hello'
 
 var foo = new Foo();
-foo.classMethod()
+foo.classMethod();
 // TypeError: foo.classMethod is not a function
 ```
 
@@ -580,14 +583,14 @@ class Foo {
     this.baz();
   }
   static baz() {
-    console.log('hello');
+    console.log("hello");
   }
   baz() {
-    console.log('world');
+    console.log("world");
   }
 }
 
-Foo.bar() // hello
+Foo.bar(); // hello
 ```
 
 上面代码中，静态方法`bar`调用了`this.baz`，这里的`this`指的是`Foo`类，而不是`Foo`的实例，等同于调用`Foo.baz`。另外，从这个例子还可以看出，静态方法可以与非静态方法重名。
@@ -597,14 +600,13 @@ Foo.bar() // hello
 ```javascript
 class Foo {
   static classMethod() {
-    return 'hello';
+    return "hello";
   }
 }
 
-class Bar extends Foo {
-}
+class Bar extends Foo {}
 
-Bar.classMethod() // 'hello'
+Bar.classMethod(); // 'hello'
 ```
 
 上面代码中，父类`Foo`有一个静态方法，子类`Bar`可以调用这个方法。
@@ -614,17 +616,17 @@ Bar.classMethod() // 'hello'
 ```javascript
 class Foo {
   static classMethod() {
-    return 'hello';
+    return "hello";
   }
 }
 
 class Bar extends Foo {
   static classMethod() {
-    return super.classMethod() + ', too';
+    return super.classMethod() + ", too";
   }
 }
 
-Bar.classMethod() // "hello, too"
+Bar.classMethod(); // "hello, too"
 ```
 
 ## 实例属性的新写法
@@ -637,7 +639,7 @@ class IncreasingCounter {
     this._count = 0;
   }
   get value() {
-    console.log('Getting the current value!');
+    console.log("Getting the current value!");
     return this._count;
   }
   increment() {
@@ -652,7 +654,7 @@ class IncreasingCounter {
 class IncreasingCounter {
   _count = 0;
   get value() {
-    console.log('Getting the current value!');
+    console.log("Getting the current value!");
     return this._count;
   }
   increment() {
@@ -667,8 +669,8 @@ class IncreasingCounter {
 
 ```javascript
 class foo {
-  bar = 'hello';
-  baz = 'world';
+  bar = "hello";
+  baz = "world";
 
   constructor() {
     // ...
@@ -683,11 +685,10 @@ class foo {
 静态属性指的是 Class 本身的属性，即`Class.propName`，而不是定义在实例对象（`this`）上的属性。
 
 ```javascript
-class Foo {
-}
+class Foo {}
 
 Foo.prop = 1;
-Foo.prop // 1
+Foo.prop; // 1
 ```
 
 上面的写法为`Foo`类定义了一个静态属性`prop`。
@@ -731,15 +732,14 @@ class Foo {
 
 ```javascript
 class Widget {
-
   // 公有方法
-  foo (baz) {
+  foo(baz) {
     this._bar(baz);
   }
 
   // 私有方法
   _bar(baz) {
-    return this.snaf = baz;
+    return (this.snaf = baz);
   }
 
   // ...
@@ -752,7 +752,7 @@ class Widget {
 
 ```javascript
 class Widget {
-  foo (baz) {
+  foo(baz) {
     bar.call(this, baz);
   }
 
@@ -760,7 +760,7 @@ class Widget {
 }
 
 function bar(baz) {
-  return this.snaf = baz;
+  return (this.snaf = baz);
 }
 ```
 
@@ -769,11 +769,10 @@ function bar(baz) {
 还有一种方法是利用`Symbol`值的唯一性，将私有方法的名字命名为一个`Symbol`值。
 
 ```javascript
-const bar = Symbol('bar');
-const snaf = Symbol('snaf');
+const bar = Symbol("bar");
+const snaf = Symbol("snaf");
 
-export default class myClass{
-
+export default class myClass {
   // 公有方法
   foo(baz) {
     this[bar](baz);
@@ -781,11 +780,11 @@ export default class myClass{
 
   // 私有方法
   [bar](baz) {
-    return this[snaf] = baz;
+    return (this[snaf] = baz);
   }
 
   // ...
-};
+}
 ```
 
 上面代码中，`bar`和`snaf`都是`Symbol`值，一般情况下无法获取到它们，因此达到了私有方法和私有属性的效果。但是也不是绝对不行，`Reflect.ownKeys()`依然可以拿到它们。
@@ -793,7 +792,7 @@ export default class myClass{
 ```javascript
 const inst = new myClass();
 
-Reflect.ownKeys(myClass.prototype)
+Reflect.ownKeys(myClass.prototype);
 // [ 'constructor', 'foo', Symbol(bar) ]
 ```
 
@@ -807,7 +806,7 @@ Reflect.ownKeys(myClass.prototype)
 class IncreasingCounter {
   #count = 0;
   get value() {
-    console.log('Getting the current value!');
+    console.log("Getting the current value!");
     return this.#count;
   }
   increment() {
@@ -820,8 +819,8 @@ class IncreasingCounter {
 
 ```javascript
 const counter = new IncreasingCounter();
-counter.#count // 报错
-counter.#count = 42 // 报错
+counter.#count; // 报错
+counter.#count = 42; // 报错
 ```
 
 上面代码在类的外部，读取私有属性，就会报错。
@@ -918,17 +917,17 @@ class FakeMath {
   }
 
   static random() {
-    console.log('I heard you like random numbers…')
+    console.log("I heard you like random numbers…");
     return FakeMath.#computeRandomNumber();
   }
 }
 
-FakeMath.PI // 3.142857142857143
-FakeMath.random()
+FakeMath.PI; // 3.142857142857143
+FakeMath.random();
 // I heard you like random numbers…
 // 4
-FakeMath.#totallyRandomNumber // 报错
-FakeMath.#computeRandomNumber() // 报错
+FakeMath.#totallyRandomNumber; // 报错
+FakeMath.#computeRandomNumber(); // 报错
 ```
 
 上面代码中，`#totallyRandomNumber`是私有属性，`#computeRandomNumber()`是私有方法，只能在`FakeMath`这个类的内部调用，外部调用就会报错。
@@ -942,7 +941,7 @@ function Person(name) {
   if (new.target !== undefined) {
     this.name = name;
   } else {
-    throw new Error('必须使用 new 命令生成实例');
+    throw new Error("必须使用 new 命令生成实例");
   }
 }
 
@@ -951,12 +950,12 @@ function Person(name) {
   if (new.target === Person) {
     this.name = name;
   } else {
-    throw new Error('必须使用 new 命令生成实例');
+    throw new Error("必须使用 new 命令生成实例");
   }
 }
 
-var person = new Person('张三'); // 正确
-var notAPerson = Person.call(person, '张三');  // 报错
+var person = new Person("张三"); // 正确
+var notAPerson = Person.call(person, "张三"); // 报错
 ```
 
 上面代码确保构造函数只能通过`new`命令调用。
@@ -1002,7 +1001,7 @@ var obj = new Square(3); // 输出 false
 class Shape {
   constructor() {
     if (new.target === Shape) {
-      throw new Error('本类不能实例化');
+      throw new Error("本类不能实例化");
     }
   }
 }
@@ -1014,8 +1013,8 @@ class Rectangle extends Shape {
   }
 }
 
-var x = new Shape();  // 报错
-var y = new Rectangle(3, 4);  // 正确
+var x = new Shape(); // 报错
+var y = new Rectangle(3, 4); // 正确
 ```
 
 上面代码中，`Shape`类不能被实例化，只能用于继承。

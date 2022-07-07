@@ -1,12 +1,10 @@
 ---
 title: Iterator 和 for-of 循环
-date: 2022-02-07 12:20:21
 
 categories:
-  - docs
   - ES6
 tags:
-  - 
+  -
 ---
 
 # Iterator 和 for...of 循环
@@ -14,7 +12,9 @@ tags:
 ## Iterator（遍历器）的概念
 
 JavaScript 原有的表示“集合”的数据结构，主要是数组（`Array`）和对象（`Object`），ES6 又添加了`Map`和`Set`。这样就有了四种数据集合，用户还可以组合使用它们，定义自己的数据结构，比如数组的成员是`Map`，`Map`的成员是对象。这样就需要一种统一的接口机制，来处理所有不同的数据结构。
+
 <!-- more -->
+
 遍历器（Iterator）就是这样一种机制。**它是一种接口，为各种不同的数据结构提供统一的访问机制**。**任何数据结构只要部署 Iterator 接口，就可以完成遍历操作**（即依次处理该数据结构的所有成员）。
 
 Iterator 的作用有三个：一是为各种数据结构，提供一个统一的、简便的访问接口；二是使得数据结构的成员能够按某种次序排列；三是 ES6 创造了一种新的遍历命令`for...of`循环，Iterator 接口主要供`for...of`消费。
@@ -34,20 +34,20 @@ Iterator 的遍历过程是这样的。
 下面是一个模拟`next`方法返回值的例子。
 
 ```javascript
-var it = makeIterator(['a', 'b']);
+var it = makeIterator(["a", "b"]);
 
-it.next() // { value: "a", done: false }
-it.next() // { value: "b", done: false }
-it.next() // { value: undefined, done: true }
+it.next(); // { value: "a", done: false }
+it.next(); // { value: "b", done: false }
+it.next(); // { value: undefined, done: true }
 
 function makeIterator(array) {
   var nextIndex = 0;
   return {
-    next: function() {
-      return nextIndex < array.length ?
-        {value: array[nextIndex++], done: false} :
-        {value: undefined, done: true};
-    }
+    next: function () {
+      return nextIndex < array.length
+        ? { value: array[nextIndex++], done: false }
+        : { value: undefined, done: true };
+    },
   };
 }
 ```
@@ -66,11 +66,11 @@ function makeIterator(array) {
 function makeIterator(array) {
   var nextIndex = 0;
   return {
-    next: function() {
-      return nextIndex < array.length ?
-        {value: array[nextIndex++]} :
-        {done: true};
-    }
+    next: function () {
+      return nextIndex < array.length
+        ? { value: array[nextIndex++] }
+        : { done: true };
+    },
   };
 }
 ```
@@ -80,18 +80,18 @@ function makeIterator(array) {
 ```javascript
 var it = idMaker();
 
-it.next().value // 0
-it.next().value // 1
-it.next().value // 2
+it.next().value; // 0
+it.next().value; // 1
+it.next().value; // 2
 // ...
 
 function idMaker() {
   var index = 0;
 
   return {
-    next: function() {
-      return {value: index++, done: false};
-    }
+    next: function () {
+      return { value: index++, done: false };
+    },
   };
 }
 ```
@@ -125,16 +125,16 @@ ES6 规定，**默认的 Iterator 接口部署在数据结构的`Symbol.iterator
 
 ```javascript
 const obj = {
-  [Symbol.iterator] : function () {
+  [Symbol.iterator]: function () {
     return {
       next: function () {
         return {
           value: 1,
-          done: true
+          done: true,
         };
-      }
+      },
     };
-  }
+  },
 };
 ```
 
@@ -155,13 +155,13 @@ ES6 的有些数据结构原生具备 Iterator 接口（比如数组），即不
 下面的例子是数组的`Symbol.iterator`属性。
 
 ```javascript
-let arr = ['a', 'b', 'c'];
+let arr = ["a", "b", "c"];
 let iter = arr[Symbol.iterator]();
 
-iter.next() // { value: 'a', done: false }
-iter.next() // { value: 'b', done: false }
-iter.next() // { value: 'c', done: false }
-iter.next() // { value: undefined, done: true }
+iter.next(); // { value: 'a', done: false }
+iter.next(); // { value: 'b', done: false }
+iter.next(); // { value: 'c', done: false }
+iter.next(); // { value: undefined, done: true }
 ```
 
 上面代码中，变量`arr`是一个数组，原生就具有遍历器接口，部署在`arr`的`Symbol.iterator`属性上面。所以，调用这个属性，就得到遍历器对象。
@@ -179,15 +179,17 @@ class RangeIterator {
     this.stop = stop;
   }
 
-  [Symbol.iterator]() { return this; }
+  [Symbol.iterator]() {
+    return this;
+  }
 
   next() {
     var value = this.value;
     if (value < this.stop) {
       this.value++;
-      return {done: false, value: value};
+      return { done: false, value: value };
     }
-    return {done: true, value: undefined};
+    return { done: true, value: undefined };
   }
 }
 
@@ -210,7 +212,7 @@ function Obj(value) {
   this.next = null;
 }
 
-Obj.prototype[Symbol.iterator] = function() {
+Obj.prototype[Symbol.iterator] = function () {
   var iterator = { next: next };
 
   var current = this;
@@ -225,7 +227,7 @@ Obj.prototype[Symbol.iterator] = function() {
     }
   }
   return iterator;
-}
+};
 
 var one = new Obj(1);
 var two = new Obj(2);
@@ -234,7 +236,7 @@ var three = new Obj(3);
 one.next = two;
 two.next = three;
 
-for (var i of one){
+for (var i of one) {
   console.log(i); // 1, 2, 3
 }
 ```
@@ -245,7 +247,7 @@ for (var i of one){
 
 ```javascript
 let obj = {
-  data: [ 'hello', 'world' ],
+  data: ["hello", "world"],
   [Symbol.iterator]() {
     const self = this;
     let index = 0;
@@ -254,14 +256,14 @@ let obj = {
         if (index < self.data.length) {
           return {
             value: self.data[index++],
-            done: false
+            done: false,
           };
         } else {
           return { value: undefined, done: true };
         }
-      }
+      },
     };
-  }
+  },
 };
 ```
 
@@ -272,7 +274,7 @@ NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 // 或者
 NodeList.prototype[Symbol.iterator] = [][Symbol.iterator];
 
-[...document.querySelectorAll('div')] // 可以执行了
+[...document.querySelectorAll("div")]; // 可以执行了
 ```
 
 NodeList 对象是类似数组的对象，本来就具有遍历接口，可以直接遍历。上面代码中，我们将它的遍历接口改成数组的`Symbol.iterator`属性，可以看到没有任何影响。
@@ -281,11 +283,11 @@ NodeList 对象是类似数组的对象，本来就具有遍历接口，可以�
 
 ```javascript
 let iterable = {
-  0: 'a',
-  1: 'b',
-  2: 'c',
+  0: "a",
+  1: "b",
+  2: "c",
   length: 3,
-  [Symbol.iterator]: Array.prototype[Symbol.iterator]
+  [Symbol.iterator]: Array.prototype[Symbol.iterator],
 };
 for (let item of iterable) {
   console.log(item); // 'a', 'b', 'c'
@@ -296,11 +298,11 @@ for (let item of iterable) {
 
 ```javascript
 let iterable = {
-  a: 'a',
-  b: 'b',
-  c: 'c',
+  a: "a",
+  b: "b",
+  c: "c",
   length: 3,
-  [Symbol.iterator]: Array.prototype[Symbol.iterator]
+  [Symbol.iterator]: Array.prototype[Symbol.iterator],
 };
 for (let item of iterable) {
   console.log(item); // undefined, undefined, undefined
@@ -314,7 +316,7 @@ var obj = {};
 
 obj[Symbol.iterator] = () => 1;
 
-[...obj] // TypeError: [] is not a function
+[...obj]; // TypeError: [] is not a function
 ```
 
 上面代码中，变量`obj`的`Symbol.iterator`方法对应的不是遍历器生成函数，因此报错。
@@ -342,9 +344,9 @@ while (!$result.done) {
 对数组和 Set 结构进行解构赋值时，会默认调用`Symbol.iterator`方法。
 
 ```javascript
-let set = new Set().add('a').add('b').add('c');
+let set = new Set().add("a").add("b").add("c");
 
-let [x,y] = set;
+let [x, y] = set;
 // x='a'; y='b'
 
 let [first, ...rest] = set;
@@ -357,12 +359,12 @@ let [first, ...rest] = set;
 
 ```javascript
 // 例一
-var str = 'hello';
-[...str] //  ['h','e','l','l','o']
+var str = "hello";
+[...str]; //  ['h','e','l','l','o']
 
 // 例二
-let arr = ['b', 'c'];
-['a', ...arr, 'd']
+let arr = ["b", "c"];
+["a", ...arr, "d"];
 // ['a', 'b', 'c', 'd']
 ```
 
@@ -381,18 +383,18 @@ let arr = [...iterable];
 ```javascript
 let generator = function* () {
   yield 1;
-  yield* [2,3,4];
+  yield* [2, 3, 4];
   yield 5;
 };
 
 var iterator = generator();
 
-iterator.next() // { value: 1, done: false }
-iterator.next() // { value: 2, done: false }
-iterator.next() // { value: 3, done: false }
-iterator.next() // { value: 4, done: false }
-iterator.next() // { value: 5, done: false }
-iterator.next() // { value: undefined, done: true }
+iterator.next(); // { value: 1, done: false }
+iterator.next(); // { value: 2, done: false }
+iterator.next(); // { value: 3, done: false }
+iterator.next(); // { value: 4, done: false }
+iterator.next(); // { value: 5, done: false }
+iterator.next(); // { value: undefined, done: true }
 ```
 
 **（4）其他场合**
@@ -411,14 +413,14 @@ iterator.next() // { value: undefined, done: true }
 
 ```javascript
 var someString = "hi";
-typeof someString[Symbol.iterator]
+typeof someString[Symbol.iterator];
 // "function"
 
 var iterator = someString[Symbol.iterator]();
 
-iterator.next()  // { value: "h", done: false }
-iterator.next()  // { value: "i", done: false }
-iterator.next()  // { value: undefined, done: true }
+iterator.next(); // { value: "h", done: false }
+iterator.next(); // { value: "i", done: false }
+iterator.next(); // { value: undefined, done: true }
 ```
 
 上面代码中，调用`Symbol.iterator`方法返回一个遍历器对象，在这个遍历器上可以调用 next 方法，实现对于字符串的遍历。
@@ -428,11 +430,11 @@ iterator.next()  // { value: undefined, done: true }
 ```javascript
 var str = new String("hi");
 
-[...str] // ["h", "i"]
+[...str]; // ["h", "i"]
 
-str[Symbol.iterator] = function() {
+str[Symbol.iterator] = function () {
   return {
-    next: function() {
+    next: function () {
       if (this._first) {
         this._first = false;
         return { value: "bye", done: false };
@@ -440,12 +442,12 @@ str[Symbol.iterator] = function() {
         return { done: true };
       }
     },
-    _first: true
+    _first: true,
   };
 };
 
-[...str] // ["bye"]
-str // "hi"
+[...str]; // ["bye"]
+str; // "hi"
 ```
 
 上面代码中，字符串 str 的`Symbol.iterator`方法被修改了，所以扩展运算符（`...`）返回的值变成了`bye`，而字符串本身还是`hi`。
@@ -499,7 +501,7 @@ function readLinesSync(file) {
         return() {
           file.close();
           return { done: true };
-        }
+        },
       };
     },
   };
@@ -541,16 +543,16 @@ ES6 借鉴 C++、Java、C# 和 Python 语言，引入了`for...of`循环，**作
 数组原生具备`iterator`接口（即默认部署了`Symbol.iterator`属性），`for...of`循环本质上就是调用这个接口产生的遍历器，可以用下面的代码证明。
 
 ```javascript
-const arr = ['red', 'green', 'blue'];
+const arr = ["red", "green", "blue"];
 
-for(let v of arr) {
+for (let v of arr) {
   console.log(v); // red green blue
 }
 
 const obj = {};
 obj[Symbol.iterator] = arr[Symbol.iterator].bind(arr);
 
-for(let v of obj) {
+for (let v of obj) {
   console.log(v); // red green blue
 }
 ```
@@ -560,18 +562,18 @@ for(let v of obj) {
 `for...of`循环可以代替数组实例的`forEach`方法。
 
 ```javascript
-const arr = ['red', 'green', 'blue'];
+const arr = ["red", "green", "blue"];
 
 arr.forEach(function (element, index) {
   console.log(element); // red green blue
-  console.log(index);   // 0 1 2
+  console.log(index); // 0 1 2
 });
 ```
 
 JavaScript 原有的**`for...in`循环，只能获得对象的键名**，不能直接获取键值。ES6 提供`for...of`循环，允许遍历获得键值。
 
 ```javascript
-var arr = ['a', 'b', 'c', 'd'];
+var arr = ["a", "b", "c", "d"];
 
 for (let a in arr) {
   console.log(a); // 0 1 2 3
@@ -588,7 +590,7 @@ for (let a of arr) {
 
 ```javascript
 let arr = [3, 5, 7];
-arr.foo = 'hello';
+arr.foo = "hello";
 
 for (let i in arr) {
   console.log(i); // "0", "1", "2", "foo"
@@ -629,7 +631,7 @@ for (var [name, value] of es6) {
 上面代码演示了如何遍历 Set 结构和 Map 结构。值得注意的地方有两个，首先，遍历的顺序是按照各个成员被添加进数据结构的顺序。其次，Set 结构遍历时，返回的是一个值，而 Map 结构遍历时，返回的是一个数组，该数组的两个成员分别为当前 Map 成员的键名和键值。
 
 ```javascript
-let map = new Map().set('a', 1).set('b', 2);
+let map = new Map().set("a", 1).set("b", 2);
 for (let pair of map) {
   console.log(pair);
 }
@@ -637,7 +639,7 @@ for (let pair of map) {
 // ['b', 2]
 
 for (let [key, value] of map) {
-  console.log(key + ' : ' + value);
+  console.log(key + " : " + value);
 }
 // a : 1
 // b : 2
@@ -654,7 +656,7 @@ for (let [key, value] of map) {
 这三个方法调用后生成的遍历器对象，所遍历的都是计算生成的数据结构。
 
 ```javascript
-let arr = ['a', 'b', 'c'];
+let arr = ["a", "b", "c"];
 for (let pair of arr.entries()) {
   console.log(pair);
 }
@@ -688,7 +690,7 @@ function printArgs() {
     console.log(x);
   }
 }
-printArgs('a', 'b');
+printArgs("a", "b");
 // 'a'
 // 'b'
 ```
@@ -696,7 +698,7 @@ printArgs('a', 'b');
 对于字符串来说，`for...of`循环还有一个特点，就是会正确识别 32 位 UTF-16 字符。
 
 ```javascript
-for (let x of 'a\uD83D\uDC0A') {
+for (let x of "a\uD83D\uDC0A") {
   console.log(x);
 }
 // 'a'
@@ -706,7 +708,7 @@ for (let x of 'a\uD83D\uDC0A') {
 并不是所有类似数组的对象都具有 Iterator 接口，一个简便的解决方法，就是使用`Array.from`方法将其转为数组。
 
 ```javascript
-let arrayLike = { length: 2, 0: 'a', 1: 'b' };
+let arrayLike = { length: 2, 0: "a", 1: "b" };
 
 // 报错
 for (let x of arrayLike) {
@@ -727,7 +729,7 @@ for (let x of Array.from(arrayLike)) {
 let es6 = {
   edition: 6,
   committee: "TC39",
-  standard: "ECMA-262"
+  standard: "ECMA-262",
 };
 
 for (let e in es6) {
@@ -749,7 +751,7 @@ for (let e of es6) {
 
 ```javascript
 for (var key of Object.keys(someObject)) {
-  console.log(key + ': ' + someObject[key]);
+  console.log(key + ": " + someObject[key]);
 }
 ```
 
@@ -763,7 +765,7 @@ function* entries(obj) {
 }
 
 for (let [key, value] of entries(obj)) {
-  console.log(key, '->', value);
+  console.log(key, "->", value);
 }
 // a -> 1
 // b -> 2
@@ -822,8 +824,7 @@ for (let value of myArray) {
 
 ```javascript
 for (var n of fibonacci) {
-  if (n > 1000)
-    break;
+  if (n > 1000) break;
   console.log(n);
 }
 ```

@@ -1,12 +1,10 @@
 ---
 title: Generator 函数的语法
-date: 2022-02-07 12:20:21
 
 categories:
-  - docs
   - ES6
 tags:
-  - 
+  -
 ---
 
 # Generator 函数的语法
@@ -16,7 +14,9 @@ tags:
 ### 基本概念
 
 Generator 函数是 ES6 提供的一种**异步编程解决方案**，语法行为与传统函数完全不同。本章详细介绍 Generator 函数的语法和 API，它的异步编程应用请看《Generator 函数的异步应用》一章。
+
 <!-- more -->
+
 Generator 函数有多种理解角度。语法上，首先可以把它理解成，Generator 函数是一个状态机，**封装了多个内部状态**。
 
 执行 Generator 函数会**返回一个遍历器对象**，也就是说，Generator 函数除了状态机，**还是一个遍历器对象生成函数**。返回的遍历器对象，可以依次遍历 Generator 函数内部的每一个状态。
@@ -25,9 +25,9 @@ Generator 函数有多种理解角度。语法上，首先可以把它理解成�
 
 ```javascript
 function* helloWorldGenerator() {
-  yield 'hello';
-  yield 'world';
-  return 'ending';
+  yield "hello";
+  yield "world";
+  return "ending";
 }
 
 var hw = helloWorldGenerator();
@@ -40,16 +40,16 @@ var hw = helloWorldGenerator();
 下一步，必须调用遍历器对象的`next`方法，使得指针移向下一个状态。也就是说，每次调用`next`方法，内部指针就从函数头部或上一次停下来的地方开始执行，直到遇到下一个`yield`表达式（或`return`语句）为止。换言之，Generator 函数是分段执行的，`yield`表达式是暂停执行的标记，而`next`方法可以恢复执行。
 
 ```javascript
-hw.next()
+hw.next();
 // { value: 'hello', done: false }
 
-hw.next()
+hw.next();
 // { value: 'world', done: false }
 
-hw.next()
+hw.next();
 // { value: 'ending', done: true }
 
-hw.next()
+hw.next();
 // { value: undefined, done: true }
 ```
 
@@ -94,7 +94,7 @@ function*foo(x, y) { ··· }
 
 ```javascript
 function* gen() {
-  yield  123 + 456;
+  yield 123 + 456;
 }
 ```
 
@@ -106,13 +106,13 @@ Generator 函数可以不用`yield`表达式，这时就变成了一个单纯的
 
 ```javascript
 function* f() {
-  console.log('执行了！')
+  console.log("执行了！");
 }
 
 var generator = f();
 
 setTimeout(function () {
-  generator.next()
+  generator.next();
 }, 2000);
 ```
 
@@ -158,7 +158,7 @@ var flat = function* (a) {
   var length = a.length;
   for (var i = 0; i < length; i++) {
     var item = a[i];
-    if (typeof item !== 'number') {
+    if (typeof item !== "number") {
       yield* flat(item);
     } else {
       yield item;
@@ -188,7 +188,7 @@ function* demo() {
 
 ```javascript
 function* demo() {
-  foo(yield 'a', yield 'b'); // OK
+  foo(yield "a", yield "b"); // OK
   let input = yield; // OK
 }
 ```
@@ -207,7 +207,7 @@ myIterable[Symbol.iterator] = function* () {
   yield 3;
 };
 
-[...myIterable] // [1, 2, 3]
+[...myIterable]; // [1, 2, 3]
 ```
 
 上面代码中，Generator 函数赋值给`Symbol.iterator`属性，从而使得`myIterable`对象具有了 Iterator 接口，可以被`...`运算符遍历了。
@@ -215,13 +215,13 @@ myIterable[Symbol.iterator] = function* () {
 Generator 函数执行后，返回一个遍历器对象。该对象本身也具有`Symbol.iterator`属性，执行后返回自身。
 
 ```javascript
-function* gen(){
+function* gen() {
   // some code
 }
 
 var g = gen();
 
-g[Symbol.iterator]() === g
+g[Symbol.iterator]() === g;
 // true
 ```
 
@@ -233,17 +233,19 @@ g[Symbol.iterator]() === g
 
 ```javascript
 function* f() {
-  for(var i = 0; true; i++) {
+  for (var i = 0; true; i++) {
     var reset = yield i;
-    if(reset) { i = -1; }
+    if (reset) {
+      i = -1;
+    }
   }
 }
 
 var g = f();
 
-g.next() // { value: 0, done: false }
-g.next() // { value: 1, done: false }
-g.next(true) // { value: 0, done: false } // 参数true 传给上面的变量reset
+g.next(); // { value: 0, done: false }
+g.next(); // { value: 1, done: false }
+g.next(true); // { value: 0, done: false } // 参数true 传给上面的变量reset
 ```
 
 上面代码先定义了一个可以无限运行的 Generator 函数`f`，如果`next`方法没有参数，每次运行到`yield`表达式，变量`reset`的值总是`undefined`。当`next`方法带一个参数`true`时，变量`reset`就被重置为这个参数（即`true`），因此`i`会等于`-1`，下一轮循环就会从`-1`开始递增。
@@ -254,20 +256,20 @@ g.next(true) // { value: 0, done: false } // 参数true 传给上面的变量res
 
 ```javascript
 function* foo(x) {
-  var y = 2 * (yield (x + 1));
-  var z = yield (y / 3);
-  return (x + y + z);
+  var y = 2 * (yield x + 1);
+  var z = yield y / 3;
+  return x + y + z;
 }
 
 var a = foo(5);
-a.next() // Object{value:6, done:false}
-a.next() // Object{value:NaN, done:false}
-a.next() // Object{value:NaN, done:true}
+a.next(); // Object{value:6, done:false}
+a.next(); // Object{value:NaN, done:false}
+a.next(); // Object{value:NaN, done:true}
 
 var b = foo(5);
-b.next() // { value:6, done:false }
-b.next(12) // { value:8, done:false }
-b.next(13) // { value:42, done:true }
+b.next(); // { value:6, done:false }
+b.next(12); // { value:8, done:false }
+b.next(13); // { value:42, done:true }
 ```
 
 上面代码中，第二次运行`next`方法的时候不带参数，导致 y 的值等于`2 * undefined`（即`NaN`），除以 3 以后还是`NaN`，因此返回对象的`value`属性也等于`NaN`。第三次运行`Next`方法的时候不带参数，所以`z`等于`undefined`，返回对象的`value`属性等于`5 + NaN + undefined`，即`NaN`。
@@ -280,18 +282,18 @@ b.next(13) // { value:42, done:true }
 
 ```javascript
 function* dataConsumer() {
-  console.log('Started');
+  console.log("Started");
   console.log(`1. ${yield}`);
   console.log(`2. ${yield}`);
-  return 'result';
+  return "result";
 }
 
 let genObj = dataConsumer();
 genObj.next();
 // Started
-genObj.next('a')
+genObj.next("a");
 // 1. a
-genObj.next('b')
+genObj.next("b");
 // 2. b
 ```
 
@@ -310,10 +312,10 @@ function wrapper(generatorFunction) {
 
 const wrapped = wrapper(function* () {
   console.log(`First input: ${yield}`);
-  return 'DONE';
+  return "DONE";
 });
 
-wrapped().next('hello!')
+wrapped().next("hello!");
 // First input: hello!
 ```
 
@@ -371,7 +373,7 @@ function* objectEntries(obj) {
   }
 }
 
-let jane = { first: 'Jane', last: 'Doe' };
+let jane = { first: "Jane", last: "Doe" };
 
 for (let [key, value] of objectEntries(jane)) {
   console.log(`${key}: ${value}`);
@@ -391,7 +393,7 @@ function* objectEntries() {
   }
 }
 
-let jane = { first: 'Jane', last: 'Doe' };
+let jane = { first: "Jane", last: "Doe" };
 
 jane[Symbol.iterator] = objectEntries;
 
@@ -405,27 +407,27 @@ for (let [key, value] of jane) {
 除了`for...of`循环以外，扩展运算符（`...`）、解构赋值和`Array.from`方法内部调用的，都是遍历器接口。这意味着，它们都可以将 Generator 函数返回的 Iterator 对象，作为参数。
 
 ```javascript
-function* numbers () {
-  yield 1
-  yield 2
-  return 3
-  yield 4
+function* numbers() {
+  yield 1;
+  yield 2;
+  return 3;
+  yield 4;
 }
 
 // 扩展运算符
-[...numbers()] // [1, 2]
+[...numbers()]; // [1, 2]
 
 // Array.from 方法
-Array.from(numbers()) // [1, 2]
+Array.from(numbers()); // [1, 2]
 
 // 解构赋值
 let [x, y] = numbers();
-x // 1
-y // 2
+x; // 1
+y; // 2
 
 // for...of 循环
 for (let n of numbers()) {
-  console.log(n)
+  console.log(n);
 }
 // 1
 // 2
@@ -440,7 +442,7 @@ var g = function* () {
   try {
     yield;
   } catch (e) {
-    console.log('内部捕获', e);
+    console.log("内部捕获", e);
   }
 };
 
@@ -448,10 +450,10 @@ var i = g();
 i.next();
 
 try {
-  i.throw('a');
-  i.throw('b');
+  i.throw("a");
+  i.throw("b");
 } catch (e) {
-  console.log('外部捕获', e);
+  console.log("外部捕获", e);
 }
 // 内部捕获 a
 // 外部捕获 b
@@ -472,7 +474,7 @@ var g = function* () {
 
 var i = g();
 i.next();
-i.throw(new Error('出错了！'));
+i.throw(new Error("出错了！"));
 // Error: 出错了！(…)
 ```
 
@@ -484,8 +486,8 @@ var g = function* () {
     try {
       yield;
     } catch (e) {
-      if (e != 'a') throw e;
-      console.log('内部捕获', e);
+      if (e != "a") throw e;
+      console.log("内部捕获", e);
     }
   }
 };
@@ -494,10 +496,10 @@ var i = g();
 i.next();
 
 try {
-  throw new Error('a');
-  throw new Error('b');
+  throw new Error("a");
+  throw new Error("b");
 } catch (e) {
-  console.log('外部捕获', e);
+  console.log("外部捕获", e);
 }
 // 外部捕获 [Error: a]
 ```
@@ -510,7 +512,7 @@ try {
 var g = function* () {
   while (true) {
     yield;
-    console.log('内部捕获', e);
+    console.log("内部捕获", e);
   }
 };
 
@@ -518,10 +520,10 @@ var i = g();
 i.next();
 
 try {
-  i.throw('a');
-  i.throw('b');
+  i.throw("a");
+  i.throw("b");
 } catch (e) {
-  console.log('外部捕获', e);
+  console.log("外部捕获", e);
 }
 // 外部捕获 a
 ```
@@ -531,10 +533,10 @@ try {
 如果 Generator 函数内部和外部，都没有部署`try...catch`代码块，那么程序将报错，直接中断执行。
 
 ```javascript
-var gen = function* gen(){
-  yield console.log('hello');
-  yield console.log('world');
-}
+var gen = function* gen() {
+  yield console.log("hello");
+  yield console.log("world");
+};
 
 var g = gen();
 g.next();
@@ -552,7 +554,7 @@ function* gen() {
   try {
     yield 1;
   } catch (e) {
-    console.log('内部捕获');
+    console.log("内部捕获");
   }
 }
 
@@ -566,20 +568,20 @@ g.throw(1);
 `throw`方法被捕获以后，会附带执行下一条`yield`表达式。也就是说，会附带执行一次`next`方法。
 
 ```javascript
-var gen = function* gen(){
+var gen = function* gen() {
   try {
-    yield console.log('a');
+    yield console.log("a");
   } catch (e) {
     // ...
   }
-  yield console.log('b');
-  yield console.log('c');
-}
+  yield console.log("b");
+  yield console.log("c");
+};
 
 var g = gen();
-g.next() // a
-g.throw() // b
-g.next() // c
+g.next(); // a
+g.throw(); // b
+g.next(); // c
 ```
 
 上面代码中，`g.throw`方法被捕获以后，自动执行了一次`next`方法，所以会打印`b`。另外，也可以看到，只要 Generator 函数内部部署了`try...catch`代码块，那么遍历器的`throw`方法抛出的错误，不影响下一次遍历。
@@ -587,10 +589,10 @@ g.next() // c
 另外，`throw`命令与`g.throw`方法是无关的，两者互不影响。
 
 ```javascript
-var gen = function* gen(){
-  yield console.log('hello');
-  yield console.log('world');
-}
+var gen = function* gen() {
+  yield console.log("hello");
+  yield console.log("world");
+};
 
 var g = gen();
 g.next();
@@ -635,34 +637,34 @@ try {
 ```javascript
 function* g() {
   yield 1;
-  console.log('throwing an exception');
-  throw new Error('generator broke!');
+  console.log("throwing an exception");
+  throw new Error("generator broke!");
   yield 2;
   yield 3;
 }
 
 function log(generator) {
   var v;
-  console.log('starting generator');
+  console.log("starting generator");
   try {
     v = generator.next();
-    console.log('第一次运行next方法', v);
+    console.log("第一次运行next方法", v);
   } catch (err) {
-    console.log('捕捉错误', v);
+    console.log("捕捉错误", v);
   }
   try {
     v = generator.next();
-    console.log('第二次运行next方法', v);
+    console.log("第二次运行next方法", v);
   } catch (err) {
-    console.log('捕捉错误', v);
+    console.log("捕捉错误", v);
   }
   try {
     v = generator.next();
-    console.log('第三次运行next方法', v);
+    console.log("第三次运行next方法", v);
   } catch (err) {
-    console.log('捕捉错误', v);
+    console.log("捕捉错误", v);
   }
-  console.log('caller done');
+  console.log("caller done");
 }
 
 log(g());
@@ -689,9 +691,9 @@ function* gen() {
 
 var g = gen();
 
-g.next()        // { value: 1, done: false }
-g.return('foo') // { value: "foo", done: true }
-g.next()        // { value: undefined, done: true }
+g.next(); // { value: 1, done: false }
+g.return("foo"); // { value: "foo", done: true }
+g.next(); // { value: undefined, done: true }
 ```
 
 上面代码中，遍历器对象`g`调用`return`方法后，返回值的`value`属性就是`return`方法的参数`foo`。并且，Generator 函数的遍历就终止了，返回值的`done`属性为`true`，以后再调用`next`方法，`done`属性总是返回`true`。
@@ -707,14 +709,14 @@ function* gen() {
 
 var g = gen();
 
-g.next()        // { value: 1, done: false }
-g.return() // { value: undefined, done: true }
+g.next(); // { value: 1, done: false }
+g.return(); // { value: undefined, done: true }
 ```
 
 如果 Generator 函数内部有`try...finally`代码块，且正在执行`try`代码块，那么`return`方法会导致立刻进入`finally`代码块，执行完以后，整个函数才会结束。
 
 ```javascript
-function* numbers () {
+function* numbers() {
   yield 1;
   try {
     yield 2;
@@ -726,11 +728,11 @@ function* numbers () {
   yield 6;
 }
 var g = numbers();
-g.next() // { value: 1, done: false }
-g.next() // { value: 2, done: false }
-g.return(7) // { value: 4, done: false }
-g.next() // { value: 5, done: false }
-g.next() // { value: 7, done: true }
+g.next(); // { value: 1, done: false }
+g.next(); // { value: 2, done: false }
+g.return(7); // { value: 4, done: false }
+g.next(); // { value: 5, done: false }
+g.next(); // { value: 7, done: true }
 ```
 
 上面代码中，调用`return()`方法后，就开始执行`finally`代码块，不执行`try`里面剩下的代码了，然后等到`finally`代码块执行完，再返回`return()`方法指定的返回值。
@@ -760,7 +762,7 @@ gen.next(1); // Object {value: 1, done: true}
 `throw()`是将`yield`表达式替换成一个`throw`语句。
 
 ```javascript
-gen.throw(new Error('出错了')); // Uncaught Error: 出错了
+gen.throw(new Error("出错了")); // Uncaught Error: 出错了
 // 相当于将 let result = yield x + y
 // 替换成 let result = throw(new Error('出错了'));
 ```
@@ -779,20 +781,20 @@ gen.return(2); // Object {value: 2, done: true}
 
 ```javascript
 function* foo() {
-  yield 'a';
-  yield 'b';
+  yield "a";
+  yield "b";
 }
 
 function* bar() {
-  yield 'x';
+  yield "x";
   // 手动遍历 foo()
   for (let i of foo()) {
     console.log(i);
   }
-  yield 'y';
+  yield "y";
 }
 
-for (let v of bar()){
+for (let v of bar()) {
   console.log(v);
 }
 // x
@@ -807,29 +809,29 @@ ES6 提供了`yield*`表达式，作为解决办法，用来在一个 Generator 
 
 ```javascript
 function* bar() {
-  yield 'x';
+  yield "x";
   yield* foo();
-  yield 'y';
+  yield "y";
 }
 
 // 等同于
 function* bar() {
-  yield 'x';
-  yield 'a';
-  yield 'b';
-  yield 'y';
+  yield "x";
+  yield "a";
+  yield "b";
+  yield "y";
 }
 
 // 等同于
 function* bar() {
-  yield 'x';
+  yield "x";
   for (let v of foo()) {
     yield v;
   }
-  yield 'y';
+  yield "y";
 }
 
-for (let v of bar()){
+for (let v of bar()) {
   console.log(v);
 }
 // "x"
@@ -842,30 +844,30 @@ for (let v of bar()){
 
 ```javascript
 function* inner() {
-  yield 'hello!';
+  yield "hello!";
 }
 
 function* outer1() {
-  yield 'open';
+  yield "open";
   yield inner();
-  yield 'close';
+  yield "close";
 }
 
-var gen = outer1()
-gen.next().value // "open"
-gen.next().value // 返回一个遍历器对象
-gen.next().value // "close"
+var gen = outer1();
+gen.next().value; // "open"
+gen.next().value; // 返回一个遍历器对象
+gen.next().value; // "close"
 
 function* outer2() {
-  yield 'open'
-  yield* inner()
-  yield 'close'
+  yield "open";
+  yield* inner();
+  yield "close";
 }
 
-var gen = outer2()
-gen.next().value // "open"
-gen.next().value // "hello!"
-gen.next().value // "close"
+var gen = outer2();
+gen.next().value; // "open"
+gen.next().value; // "hello!"
+gen.next().value; // "close"
 ```
 
 上面例子中，`outer2`使用了`yield*`，`outer1`没使用。结果就是，`outer1`返回一个遍历器对象，`outer2`返回该遍历器对象的内部值。
@@ -874,17 +876,17 @@ gen.next().value // "close"
 
 ```javascript
 let delegatedIterator = (function* () {
-  yield 'Hello!';
-  yield 'Bye!';
-}());
+  yield "Hello!";
+  yield "Bye!";
+})();
 
 let delegatingIterator = (function* () {
-  yield 'Greetings!';
+  yield "Greetings!";
   yield* delegatedIterator;
-  yield 'Ok, bye.';
-}());
+  yield "Ok, bye.";
+})();
 
-for(let value of delegatingIterator) {
+for (let value of delegatingIterator) {
   console.log(value);
 }
 // "Greetings!
@@ -920,11 +922,11 @@ function* concat(iter1, iter2) {
 如果`yield*`后面跟着一个数组，由于数组原生支持遍历器，因此就会遍历数组成员。
 
 ```javascript
-function* gen(){
+function* gen() {
   yield* ["a", "b", "c"];
 }
 
-gen().next() // { value:"a", done:false }
+gen().next(); // { value:"a", done:false }
 ```
 
 上面代码中，`yield`命令后面如果不加星号，返回的是整个数组，加了星号就表示返回的是数组的遍历器对象。
@@ -933,12 +935,12 @@ gen().next() // { value:"a", done:false }
 
 ```javascript
 let read = (function* () {
-  yield 'hello';
-  yield* 'hello';
+  yield "hello";
+  yield* "hello";
 })();
 
-read.next().value // "hello"
-read.next().value // "h"
+read.next().value; // "hello"
+read.next().value; // "h"
 ```
 
 上面代码中，`yield`表达式返回整个字符串，`yield*`语句返回单个字符。因为字符串具有 Iterator 接口，所以被`yield*`遍历。
@@ -961,16 +963,16 @@ function* bar() {
 
 var it = bar();
 
-it.next()
+it.next();
 // {value: 1, done: false}
-it.next()
+it.next();
 // {value: 2, done: false}
-it.next()
+it.next();
 // {value: 3, done: false}
 it.next();
 // "v: foo"
 // {value: 4, done: false}
-it.next()
+it.next();
 // {value: undefined, done: true}
 ```
 
@@ -980,16 +982,16 @@ it.next()
 
 ```javascript
 function* genFuncWithReturn() {
-  yield 'a';
-  yield 'b';
-  return 'The result';
+  yield "a";
+  yield "b";
+  return "The result";
 }
 function* logReturned(genObj) {
   let result = yield* genObj;
   console.log(result);
 }
 
-[...logReturned(genFuncWithReturn())]
+[...logReturned(genFuncWithReturn())];
 // The result
 // 值为 [ 'a', 'b' ]
 ```
@@ -1001,7 +1003,7 @@ function* logReturned(genObj) {
 ```javascript
 function* iterTree(tree) {
   if (Array.isArray(tree)) {
-    for(let i=0; i < tree.length; i++) {
+    for (let i = 0; i < tree.length; i++) {
       yield* iterTree(tree[i]);
     }
   } else {
@@ -1009,9 +1011,9 @@ function* iterTree(tree) {
   }
 }
 
-const tree = [ 'a', ['b', 'c'], ['d', 'e'] ];
+const tree = ["a", ["b", "c"], ["d", "e"]];
 
-for(let x of iterTree(tree)) {
+for (let x of iterTree(tree)) {
   console.log(x);
 }
 // a
@@ -1024,7 +1026,7 @@ for(let x of iterTree(tree)) {
 由于扩展运算符`...`默认调用 Iterator 接口，所以上面这个函数也可以用于嵌套数组的平铺。
 
 ```javascript
-[...iterTree(tree)] // ["a", "b", "c", "d", "e"]
+[...iterTree(tree)]; // ["a", "b", "c", "d", "e"]
 ```
 
 下面是一个稍微复杂的例子，使用`yield*`语句遍历完全二叉树。
@@ -1055,7 +1057,7 @@ function make(array) {
   if (array.length == 1) return new Tree(null, array[0], null);
   return new Tree(make(array[0]), array[1], make(array[2]));
 }
-let tree = make([[['a'], 'b', ['c']], 'd', [['e'], 'f', ['g']]]);
+let tree = make([[["a"], "b", ["c"]], "d", [["e"], "f", ["g"]]]);
 
 // 遍历二叉树
 var result = [];
@@ -1063,7 +1065,7 @@ for (let node of inorder(tree)) {
   result.push(node);
 }
 
-result
+result;
 // ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 ```
 
@@ -1087,7 +1089,7 @@ let obj = {
 let obj = {
   myGeneratorMethod: function* () {
     // ···
-  }
+  },
 };
 ```
 
@@ -1099,13 +1101,13 @@ Generator 函数总是返回一个遍历器，ES6 规定这个遍历器是 Gener
 function* g() {}
 
 g.prototype.hello = function () {
-  return 'hi!';
+  return "hi!";
 };
 
 let obj = g();
 
-obj instanceof g // true
-obj.hello() // 'hi!'
+obj instanceof g; // true
+obj.hello(); // 'hi!'
 ```
 
 上面代码表明，Generator 函数`g`返回的遍历器`obj`，是`g`的实例，而且继承了`g.prototype`。但是，如果把`g`当作普通的构造函数，并不会生效，因为`g`返回的总是遍历器对象，而不是`this`对象。
@@ -1117,7 +1119,7 @@ function* g() {
 
 let obj = g();
 obj.next();
-obj.a // undefined
+obj.a; // undefined
 ```
 
 上面代码中，Generator 函数`g`在`this`对象上面添加了一个属性`a`，但是`obj`对象拿不到这个属性。
@@ -1126,11 +1128,11 @@ Generator 函数也不能跟`new`命令一起用，会报错。
 
 ```javascript
 function* F() {
-  yield this.x = 2;
-  yield this.y = 3;
+  yield (this.x = 2);
+  yield (this.y = 3);
 }
 
-new F()
+new F();
 // TypeError: F is not a constructor
 ```
 
@@ -1143,19 +1145,19 @@ new F()
 ```javascript
 function* F() {
   this.a = 1;
-  yield this.b = 2;
-  yield this.c = 3;
+  yield (this.b = 2);
+  yield (this.c = 3);
 }
 var obj = {};
 var f = F.call(obj);
 
-f.next();  // Object {value: 2, done: false}
-f.next();  // Object {value: 3, done: false}
-f.next();  // Object {value: undefined, done: true}
+f.next(); // Object {value: 2, done: false}
+f.next(); // Object {value: 3, done: false}
+f.next(); // Object {value: undefined, done: true}
 
-obj.a // 1
-obj.b // 2
-obj.c // 3
+obj.a; // 1
+obj.b; // 2
+obj.c; // 3
 ```
 
 上面代码中，首先是`F`内部的`this`对象绑定`obj`对象，然后调用它，返回一个 Iterator 对象。这个对象执行三次`next`方法（因为`F`内部有两个`yield`表达式），完成 F 内部所有代码的运行。这时，所有内部属性都绑定在`obj`对象上了，因此`obj`对象也就成了`F`的实例。
@@ -1167,18 +1169,18 @@ obj.c // 3
 ```javascript
 function* F() {
   this.a = 1;
-  yield this.b = 2;
-  yield this.c = 3;
+  yield (this.b = 2);
+  yield (this.c = 3);
 }
 var f = F.call(F.prototype);
 
-f.next();  // Object {value: 2, done: false}
-f.next();  // Object {value: 3, done: false}
-f.next();  // Object {value: undefined, done: true}
+f.next(); // Object {value: 2, done: false}
+f.next(); // Object {value: 3, done: false}
+f.next(); // Object {value: undefined, done: true}
 
-f.a // 1
-f.b // 2
-f.c // 3
+f.a; // 1
+f.b; // 2
+f.c; // 3
 ```
 
 再将`F`改成构造函数，就可以对它执行`new`命令了。
@@ -1186,8 +1188,8 @@ f.c // 3
 ```javascript
 function* gen() {
   this.a = 1;
-  yield this.b = 2;
-  yield this.c = 3;
+  yield (this.b = 2);
+  yield (this.c = 3);
 }
 
 function F() {
@@ -1196,13 +1198,13 @@ function F() {
 
 var f = new F();
 
-f.next();  // Object {value: 2, done: false}
-f.next();  // Object {value: 3, done: false}
-f.next();  // Object {value: undefined, done: true}
+f.next(); // Object {value: 2, done: false}
+f.next(); // Object {value: 3, done: false}
+f.next(); // Object {value: undefined, done: true}
 
-f.a // 1
-f.b // 2
-f.c // 3
+f.a; // 1
+f.b; // 2
+f.c; // 3
 ```
 
 ## 含义
@@ -1213,13 +1215,11 @@ Generator 是实现状态机的最佳结构。比如，下面的`clock`函数就
 
 ```javascript
 var ticking = true;
-var clock = function() {
-  if (ticking)
-    console.log('Tick!');
-  else
-    console.log('Tock!');
+var clock = function () {
+  if (ticking) console.log("Tick!");
+  else console.log("Tock!");
   ticking = !ticking;
-}
+};
 ```
 
 上面代码的`clock`函数一共有两种状态（`Tick`和`Tock`），每运行一次，就改变一次状态。这个函数如果用 Generator 实现，就是下面这样。
@@ -1227,9 +1227,9 @@ var clock = function() {
 ```javascript
 var clock = function* () {
   while (true) {
-    console.log('Tick!');
+    console.log("Tick!");
     yield;
-    console.log('Tock!');
+    console.log("Tock!");
     yield;
   }
 };
@@ -1273,10 +1273,7 @@ function* gen() {
 
 let g = gen();
 
-console.log(
-  g.next().value,
-  g.next().value,
-);
+console.log(g.next().value, g.next().value);
 ```
 
 上面代码中，第一次执行`g.next()`时，Generator 函数`gen`的上下文会加入堆栈，即开始运行`gen`内部的代码。等遇到`yield 1`时，`gen`上下文退出堆栈，内部状态冻结。第二次执行`g.next()`时，`gen`上下文重新加入堆栈，变成当前的上下文，重新恢复执行。
@@ -1297,10 +1294,10 @@ function* loadUI() {
 }
 var loader = loadUI();
 // 加载UI
-loader.next()
+loader.next();
 
 // 卸载UI
-loader.next()
+loader.next();
 ```
 
 上面代码中，第一次调用`loadUI`函数时，该函数不会执行，仅返回一个遍历器。下一次对该遍历器调用`next`方法，则会显示`Loading`界面（`showLoadingScreen`），并且异步加载数据（`loadUIDataAsynchronously`）。等到数据加载完成，再一次使用`next`方法，则会隐藏`Loading`界面。可以看到，这种写法的好处是所有`Loading`界面的逻辑，都被封装在一个函数，按部就班非常清晰。
@@ -1311,11 +1308,11 @@ Ajax 是典型的异步操作，通过 Generator 函数部署 Ajax 操作，可�
 function* main() {
   var result = yield request("http://some.url");
   var resp = JSON.parse(result);
-    console.log(resp.value);
+  console.log(resp.value);
 }
 
 function request(url) {
-  makeAjaxCall(url, function(response){
+  makeAjaxCall(url, function (response) {
     it.next(response);
   });
 }
@@ -1332,7 +1329,7 @@ it.next();
 function* numbers() {
   let file = new FileReader("numbers.txt");
   try {
-    while(!file.eof) {
+    while (!file.eof) {
       yield parseInt(file.readLine(), 10);
     }
   } finally {
@@ -1349,9 +1346,9 @@ function* numbers() {
 
 ```javascript
 step1(function (value1) {
-  step2(value1, function(value2) {
-    step3(value2, function(value3) {
-      step4(value3, function(value4) {
+  step2(value1, function (value2) {
+    step3(value2, function (value3) {
+      step4(value3, function (value4) {
         // Do something with value4
       });
     });
@@ -1366,11 +1363,14 @@ Promise.resolve(step1)
   .then(step2)
   .then(step3)
   .then(step4)
-  .then(function (value4) {
-    // Do something with value4
-  }, function (error) {
-    // Handle any error from step1 through step4
-  })
+  .then(
+    function (value4) {
+      // Do something with value4
+    },
+    function (error) {
+      // Handle any error from step1 through step4
+    }
+  )
   .done();
 ```
 
@@ -1399,7 +1399,7 @@ function scheduler(task) {
   var taskObj = task.next(task.value);
   // 如果Generator函数未结束，就继续调用
   if (!taskObj.done) {
-    task.value = taskObj.value
+    task.value = taskObj.value;
     scheduler(task);
   }
 }
@@ -1412,8 +1412,8 @@ function scheduler(task) {
 ```javascript
 let steps = [step1Func, step2Func, step3Func];
 
-function* iterateSteps(steps){
-  for (var i=0; i< steps.length; i++){
+function* iterateSteps(steps) {
+  for (var i = 0; i < steps.length; i++) {
     var step = steps[i];
     yield step();
   }
@@ -1427,8 +1427,8 @@ function* iterateSteps(steps){
 ```javascript
 let jobs = [job1, job2, job3];
 
-function* iterateJobs(jobs){
-  for (var i=0; i< jobs.length; i++){
+function* iterateJobs(jobs) {
+  for (var i = 0; i < jobs.length; i++) {
     var job = jobs[i];
     yield* iterateSteps(job.steps);
   }
@@ -1440,7 +1440,7 @@ function* iterateJobs(jobs){
 最后，就可以用`for...of`循环一次性依次执行所有任务的所有步骤。
 
 ```javascript
-for (var step of iterateJobs(jobs)){
+for (var step of iterateJobs(jobs)) {
   console.log(step.id);
 }
 ```
@@ -1453,7 +1453,7 @@ for (var step of iterateJobs(jobs)){
 var it = iterateJobs(jobs);
 var res = it.next();
 
-while (!res.done){
+while (!res.done) {
   var result = res.value;
   // ...
   res = it.next();
@@ -1467,7 +1467,7 @@ while (!res.done){
 ```javascript
 function* iterEntries(obj) {
   let keys = Object.keys(obj);
-  for (let i=0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i++) {
     let key = keys[i];
     yield [key, obj[key]];
   }
@@ -1488,19 +1488,19 @@ for (let [key, value] of iterEntries(myObj)) {
 下面是一个对数组部署 Iterator 接口的例子，尽管数组原生具有这个接口。
 
 ```javascript
-function* makeSimpleGenerator(array){
+function* makeSimpleGenerator(array) {
   var nextIndex = 0;
 
-  while(nextIndex < array.length){
+  while (nextIndex < array.length) {
     yield array[nextIndex++];
   }
 }
 
-var gen = makeSimpleGenerator(['yo', 'ya']);
+var gen = makeSimpleGenerator(["yo", "ya"]);
 
-gen.next().value // 'yo'
-gen.next().value // 'ya'
-gen.next().done  // true
+gen.next().value; // 'yo'
+gen.next().value; // 'ya'
+gen.next().done; // true
 ```
 
 ### （4）作为数据结构
@@ -1509,9 +1509,9 @@ Generator 可以看作是数据结构，更确切地说，可以看作是一个�
 
 ```javascript
 function* doStuff() {
-  yield fs.readFile.bind(null, 'hello.txt');
-  yield fs.readFile.bind(null, 'world.txt');
-  yield fs.readFile.bind(null, 'and-such.txt');
+  yield fs.readFile.bind(null, "hello.txt");
+  yield fs.readFile.bind(null, "world.txt");
+  yield fs.readFile.bind(null, "and-such.txt");
 }
 ```
 
@@ -1528,9 +1528,9 @@ for (task of doStuff()) {
 ```javascript
 function doStuff() {
   return [
-    fs.readFile.bind(null, 'hello.txt'),
-    fs.readFile.bind(null, 'world.txt'),
-    fs.readFile.bind(null, 'and-such.txt')
+    fs.readFile.bind(null, "hello.txt"),
+    fs.readFile.bind(null, "world.txt"),
+    fs.readFile.bind(null, "and-such.txt"),
   ];
 }
 ```

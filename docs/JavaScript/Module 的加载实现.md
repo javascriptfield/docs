@@ -1,18 +1,18 @@
 ---
 title: Module 的加载实现
-date: 2022-02-07 12:20:21
 
 categories:
-  - docs
   - ES6
 tags:
-  - 
+  -
 ---
 
 # Module 的加载实现
 
 上一章介绍了模块的语法，本章介绍如何在浏览器和 Node.js 之中加载 ES6 模块，以及实际开发中经常遇到的一些问题（比如循环加载）。
+
 <!-- more -->
+
 ## 浏览器加载
 
 ### 传统方法
@@ -26,8 +26,7 @@ HTML 网页中，浏览器通过`<script>`标签加载 JavaScript 脚本。
 </script>
 
 <!-- 外部脚本 -->
-<script type="application/javascript" src="path/to/myModule.js">
-</script>
+<script type="application/javascript" src="path/to/myModule.js"></script>
 ```
 
 上面代码中，由于浏览器脚本的默认语言是 JavaScript，因此`type="application/javascript"`可以省略。
@@ -88,7 +87,7 @@ ES6 模块也允许内嵌在网页中，语法行为与加载外部脚本完全�
 ```html
 <script type="module">
   import $ from "./jquery/src/jquery.js";
-  $('#message').text('Hi from jQuery!');
+  $("#message").text("Hi from jQuery!");
 </script>
 ```
 
@@ -103,7 +102,7 @@ ES6 模块也允许内嵌在网页中，语法行为与加载外部脚本完全�
 下面是一个示例模块。
 
 ```javascript
-import utils from 'https://example.com/js/utils.js';
+import utils from "https://example.com/js/utils.js";
 
 const x = 1;
 
@@ -148,9 +147,9 @@ module.exports = {
 
 ```javascript
 // main.js
-var mod = require('./lib');
+var mod = require("./lib");
 
-console.log(mod.counter);  // 3
+console.log(mod.counter); // 3
 mod.incCounter();
 console.log(mod.counter); // 3
 ```
@@ -165,7 +164,7 @@ function incCounter() {
 }
 module.exports = {
   get counter() {
-    return counter
+    return counter;
   },
   incCounter: incCounter,
 };
@@ -191,7 +190,7 @@ export function incCounter() {
 }
 
 // main.js
-import { counter, incCounter } from './lib';
+import { counter, incCounter } from "./lib";
 console.log(counter); // 3
 incCounter();
 console.log(counter); // 4
@@ -203,11 +202,11 @@ console.log(counter); // 4
 
 ```javascript
 // m1.js
-export var foo = 'bar';
-setTimeout(() => foo = 'baz', 500);
+export var foo = "bar";
+setTimeout(() => (foo = "baz"), 500);
 
 // m2.js
-import {foo} from './m1.js';
+import { foo } from "./m1.js";
 console.log(foo);
 setTimeout(() => console.log(foo), 500);
 ```
@@ -232,7 +231,7 @@ baz
 export let obj = {};
 
 // main.js
-import { obj } from './lib';
+import { obj } from "./lib";
 
 obj.prop = 123; // OK
 obj = {}; // TypeError
@@ -261,16 +260,16 @@ export let c = new C();
 
 ```javascript
 // x.js
-import {c} from './mod';
+import { c } from "./mod";
 c.add();
 
 // y.js
-import {c} from './mod';
+import { c } from "./mod";
 c.show();
 
 // main.js
-import './x';
-import './y';
+import "./x";
+import "./y";
 ```
 
 现在执行`main.js`，输出的是`1`。
@@ -330,7 +329,7 @@ $ node my-app.js
 ```javascript
 // ./my-app.mjs
 
-import { something } from 'es-module-package';
+import { something } from "es-module-package";
 // 实际加载的是 ./node_modules/es-module-package/src/index.js
 ```
 
@@ -358,7 +357,7 @@ import { something } from 'es-module-package';
 上面的代码指定`src/submodule.js`别名为`submodule`，然后就可以从别名加载这个文件。
 
 ```javascript
-import submodule from 'es-module-package/submodule';
+import submodule from "es-module-package/submodule";
 // 加载 ./node_modules/es-module-package/src/submodule.js
 ```
 
@@ -380,10 +379,10 @@ import feature from 'es-module-package/features/x.js';
 
 ```javascript
 // 报错
-import submodule from 'es-module-package/private-module.js';
+import submodule from "es-module-package/private-module.js";
 
 // 不报错
-import submodule from './node_modules/es-module-package/private-module.js';
+import submodule from "./node_modules/es-module-package/private-module.js";
 ```
 
 （2）main 的别名
@@ -480,14 +479,14 @@ import submodule from './node_modules/es-module-package/private-module.js';
 
 ```javascript
 // ./node_modules/pkg/index.cjs
-exports.name = 'value';
+exports.name = "value";
 ```
 
 然后，ES6 模块可以加载这个文件。
 
 ```javascript
 // ./node_modules/pkg/wrapper.mjs
-import cjsModule from './index.cjs';
+import cjsModule from "./index.cjs";
 export const name = cjsModule.name;
 ```
 
@@ -495,25 +494,25 @@ export const name = cjsModule.name;
 
 ```javascript
 // 正确
-import packageMain from 'commonjs-package';
+import packageMain from "commonjs-package";
 
 // 报错
-import { method } from 'commonjs-package';
+import { method } from "commonjs-package";
 ```
 
 还有一种变通的加载方法，就是使用 Node.js 内置的`module.createRequire()`方法。
 
 ```javascript
 // cjs.cjs
-module.exports = 'cjs';
+module.exports = "cjs";
 
 // esm.mjs
-import { createRequire } from 'module';
+import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 
-const cjs = require('./cjs.cjs');
-cjs === 'cjs'; // true
+const cjs = require("./cjs.cjs");
+cjs === "cjs"; // true
 ```
 
 上面代码中，ES6 模块通过`module.createRequire()`方法可以加载 CommonJS 模块
@@ -524,7 +523,7 @@ CommonJS 的`require`命令不能加载 ES6 模块，会报错，只能使用`im
 
 ```javascript
 (async () => {
-  await import('./my-app.mjs');
+  await import("./my-app.mjs");
 })();
 ```
 
@@ -536,12 +535,12 @@ Node.js 的内置模块可以整体加载，也可以加载指定的输出项。
 
 ```javascript
 // 整体加载
-import EventEmitter from 'events';
+import EventEmitter from "events";
 const e = new EventEmitter();
 
 // 加载指定的输出项
-import { readFile } from 'fs';
-readFile('./foo.txt', (err, source) => {
+import { readFile } from "fs";
+readFile("./foo.txt", (err, source) => {
   if (err) {
     console.error(err);
   } else {
@@ -556,13 +555,13 @@ ES6 模块的加载路径必须给出脚本的完整路径，不能省略脚本�
 
 ```javascript
 // ES6 模块中将报错
-import { something } from './index';
+import { something } from "./index";
 ```
 
 为了与浏览器的`import`加载规则相同，Node.js 的`.mjs`文件支持 URL 路径。
 
 ```javascript
-import './foo.mjs?query=1'; // 加载 ./foo 传入参数 ?query=1
+import "./foo.mjs?query=1"; // 加载 ./foo 传入参数 ?query=1
 ```
 
 上面代码中，脚本路径带有参数`?query=1`，Node 会按 URL 规则解读。同一个脚本只要参数不同，就会被加载多次，并且保存成不同的缓存。由于这个原因，只要文件名中含有`:`、`%`、`#`、`?`等特殊字符，最好对这些字符进行转义。
@@ -592,10 +591,10 @@ ES6 模块应该是通用的，同一个模块不用修改，就可以用在浏�
 
 ```javascript
 // a.js
-var b = require('b');
+var b = require("b");
 
 // b.js
-var a = require('a');
+var a = require("a");
 ```
 
 通常，“循环加载”表示存在强耦合，如果处理不好，还可能导致递归加载，使得程序无法执行，因此应该避免出现。
@@ -631,10 +630,10 @@ CommonJS 模块的重要特性是加载时执行，即脚本代码在`require`�
 
 ```javascript
 exports.done = false;
-var b = require('./b.js');
-console.log('在 a.js 之中，b.done = %j', b.done);
+var b = require("./b.js");
+console.log("在 a.js 之中，b.done = %j", b.done);
 exports.done = true;
-console.log('a.js 执行完毕');
+console.log("a.js 执行完毕");
 ```
 
 上面代码之中，`a.js`脚本先输出一个`done`变量，然后加载另一个脚本文件`b.js`。注意，此时`a.js`代码就停在这里，等待`b.js`执行完毕，再往下执行。
@@ -643,10 +642,10 @@ console.log('a.js 执行完毕');
 
 ```javascript
 exports.done = false;
-var a = require('./a.js');
-console.log('在 b.js 之中，a.done = %j', a.done);
+var a = require("./a.js");
+console.log("在 b.js 之中，a.done = %j", a.done);
 exports.done = true;
-console.log('b.js 执行完毕');
+console.log("b.js 执行完毕");
 ```
 
 上面代码之中，`b.js`执行到第二行，就会去加载`a.js`，这时，就发生了“循环加载”。系统会去`a.js`模块对应对象的`exports`属性取值，可是因为`a.js`还没有执行完，从`exports`属性只能取回已经执行的部分，而不是最后的值。
@@ -662,9 +661,9 @@ exports.done = false;
 然后，`b.js`接着往下执行，等到全部执行完毕，再把执行权交还给`a.js`。于是，`a.js`接着往下执行，直到执行完毕。我们写一个脚本`main.js`，验证这个过程。
 
 ```javascript
-var a = require('./a.js');
-var b = require('./b.js');
-console.log('在 main.js 之中, a.done=%j, b.done=%j', a.done, b.done);
+var a = require("./a.js");
+var b = require("./b.js");
+console.log("在 main.js 之中, a.done=%j, b.done=%j", a.done, b.done);
 ```
 
 执行`main.js`，运行结果如下。
@@ -690,15 +689,15 @@ exports.done = true;
 另外，由于 CommonJS 模块遇到循环加载时，返回的是当前已经执行的部分的值，而不是代码全部执行后的值，两者可能会有差异。所以，输入变量的时候，必须非常小心。
 
 ```javascript
-var a = require('a'); // 安全的写法
-var foo = require('a').foo; // 危险的写法
+var a = require("a"); // 安全的写法
+var foo = require("a").foo; // 危险的写法
 
 exports.good = function (arg) {
-  return a.foo('good', arg); // 使用的是 a.foo 的最新值
+  return a.foo("good", arg); // 使用的是 a.foo 的最新值
 };
 
 exports.bad = function (arg) {
-  return foo('bad', arg); // 使用的是一个部分加载时的值
+  return foo("bad", arg); // 使用的是一个部分加载时的值
 };
 ```
 
@@ -712,16 +711,16 @@ ES6 处理“循环加载”与 CommonJS 有本质的不同。ES6 模块是动�
 
 ```javascript
 // a.mjs
-import {bar} from './b';
-console.log('a.mjs');
+import { bar } from "./b";
+console.log("a.mjs");
 console.log(bar);
-export let foo = 'foo';
+export let foo = "foo";
 
 // b.mjs
-import {foo} from './a';
-console.log('b.mjs');
+import { foo } from "./a";
+console.log("b.mjs");
 console.log(foo);
-export let bar = 'bar';
+export let bar = "bar";
 ```
 
 上面代码中，`a.mjs`加载`b.mjs`，`b.mjs`又加载`a.mjs`，构成循环加载。执行`a.mjs`，结果如下。
@@ -740,18 +739,22 @@ ReferenceError: foo is not defined
 
 ```javascript
 // a.mjs
-import {bar} from './b';
-console.log('a.mjs');
+import { bar } from "./b";
+console.log("a.mjs");
 console.log(bar());
-function foo() { return 'foo' }
-export {foo};
+function foo() {
+  return "foo";
+}
+export { foo };
 
 // b.mjs
-import {foo} from './a';
-console.log('b.mjs');
+import { foo } from "./a";
+console.log("b.mjs");
 console.log(foo());
-function bar() { return 'bar' }
-export {bar};
+function bar() {
+  return "bar";
+}
+export { bar };
 ```
 
 这时再执行`a.mjs`就可以得到预期结果。
@@ -768,11 +771,11 @@ bar
 
 ```javascript
 // a.mjs
-import {bar} from './b';
-console.log('a.mjs');
+import { bar } from "./b";
+console.log("a.mjs");
 console.log(bar());
-const foo = () => 'foo';
-export {foo};
+const foo = () => "foo";
+export { foo };
 ```
 
 上面代码的第四行，改成了函数表达式，就不具有提升作用，执行就会报错。
@@ -781,7 +784,7 @@ export {foo};
 
 ```javascript
 // even.js
-import { odd } from './odd'
+import { odd } from "./odd";
 export var counter = 0;
 export function even(n) {
   counter++;
@@ -789,7 +792,7 @@ export function even(n) {
 }
 
 // odd.js
-import { even } from './even';
+import { even } from "./even";
 export function odd(n) {
   return n !== 0 && even(n - 1);
 }
@@ -818,19 +821,19 @@ true
 
 ```javascript
 // even.js
-var odd = require('./odd');
+var odd = require("./odd");
 var counter = 0;
 exports.counter = counter;
 exports.even = function (n) {
   counter++;
   return n == 0 || odd(n - 1);
-}
+};
 
 // odd.js
-var even = require('./even').even;
+var even = require("./even").even;
 module.exports = function (n) {
   return n != 0 && even(n - 1);
-}
+};
 ```
 
 上面代码中，`even.js`加载`odd.js`，而`odd.js`又去加载`even.js`，形成“循环加载”。这时，执行引擎就会输出`even.js`已经执行的部分（不存在任何结果），所以在`odd.js`之中，变量`even`等于`undefined`，等到后面调用`even(n - 1)`就会报错。

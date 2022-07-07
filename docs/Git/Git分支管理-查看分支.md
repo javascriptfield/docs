@@ -1,16 +1,13 @@
 ---
 title: Git分支管理-查看分支
-date: 2022-02-07 10:27:22
 
 categories:
-  - docs
   - Git
 tags:
-  - 
+  -
 ---
-# Git分支管理-查看分支
 
-
+# Git 分支管理-查看分支
 
 ### 查看分支
 
@@ -31,8 +28,6 @@ $ git branch -v
 * master  7a98805 Merge branch 'iss53'
   testing 782fd34 test
 ```
-
-
 
 ### 查看已(未)合并的分支
 
@@ -64,10 +59,6 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 ```sh
 $ git branch -D testing
 ```
-
-
-
-
 
 #### 查看指定分支的已(未)合并的分支
 

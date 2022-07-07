@@ -1,17 +1,16 @@
 ---
 title: Generator 函数的异步应用
-date: 2022-02-07 12:20:21
 
 categories:
-  - docs
   - ES6
 tags:
-  - 
+  -
 ---
 
 # Generator 函数的异步应用
 
 异步编程对 JavaScript 语言太重要。JavaScript 语言的执行环境是“单线程”的，如果没有异步编程，根本没法用，非卡死不可。本章主要介绍 Generator 函数如何完成异步操作。
+
 <!-- more -->
 
 ## 传统方法
@@ -42,7 +41,7 @@ JavaScript 语言对异步编程的实现，就是回调函数。所谓回调函
 读取文件进行处理，是这样写的。
 
 ```javascript
-fs.readFile('/etc/passwd', 'utf-8', function (err, data) {
+fs.readFile("/etc/passwd", "utf-8", function (err, data) {
   if (err) throw err;
   console.log(data);
 });
@@ -59,8 +58,8 @@ fs.readFile('/etc/passwd', 'utf-8', function (err, data) {
 回调函数本身并没有问题，它的问题出现在多个回调函数嵌套。假定读取`A`文件之后，再读取`B`文件，代码如下。
 
 ```javascript
-fs.readFile(fileA, 'utf-8', function (err, data) {
-  fs.readFile(fileB, 'utf-8', function (err, data) {
+fs.readFile(fileA, "utf-8", function (err, data) {
+  fs.readFile(fileB, "utf-8", function (err, data) {
     // ...
   });
 });
@@ -71,21 +70,21 @@ fs.readFile(fileA, 'utf-8', function (err, data) {
 Promise 对象就是为了解决这个问题而提出的。它不是新的语法功能，而是一种新的写法，允许将回调函数的嵌套，改成链式调用。采用 Promise，连续读取多个文件，写法如下。
 
 ```javascript
-var readFile = require('fs-readfile-promise');
+var readFile = require("fs-readfile-promise");
 
 readFile(fileA)
-.then(function (data) {
-  console.log(data.toString());
-})
-.then(function () {
-  return readFile(fileB);
-})
-.then(function (data) {
-  console.log(data.toString());
-})
-.catch(function (err) {
-  console.log(err);
-});
+  .then(function (data) {
+    console.log(data.toString());
+  })
+  .then(function () {
+    return readFile(fileB);
+  })
+  .then(function (data) {
+    console.log(data.toString());
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
 ```
 
 上面代码中，我使用了`fs-readfile-promise`模块，它的作用就是返回一个 Promise 版本的`readFile`函数。Promise 提供`then`方法加载回调函数，`catch`方法捕捉执行过程中抛出的错误。
@@ -138,8 +137,8 @@ function* gen(x) {
 }
 
 var g = gen(1);
-g.next() // { value: 3, done: false }
-g.next() // { value: undefined, done: true }
+g.next(); // { value: 3, done: false }
+g.next(); // { value: undefined, done: true }
 ```
 
 上面代码中，调用 Generator 函数，会返回一个内部指针（即遍历器）`g`。这是 Generator 函数不同于普通函数的另一个地方，即执行它不会返回结果，**返回的是指针对象。调用指针`g`的`next`方法，会移动内部指针**（即执行异步任务的第一段），指向第一个遇到的`yield`语句，上例是执行到`x + 2`为止。
@@ -153,14 +152,14 @@ g.next() // { value: undefined, done: true }
 **`next`返回值的 value 属性，是 Generator 函数向外输出数据；`next`方法还可以接受参数，向 Generator 函数体内输入数据。**
 
 ```javascript
-function* gen(x){
+function* gen(x) {
   var y = yield x + 2;
   return y;
 }
 
 var g = gen(1);
-g.next() // { value: 3, done: false }
-g.next(2) // { value: 2, done: true }
+g.next(); // { value: 3, done: false }
+g.next(2); // { value: 2, done: true }
 ```
 
 上面代码中，第一个`next`方法的`value`属性，返回表达式`x + 2`的值`3`。第二个`next`方法带有参数`2`，这个参数可以传入 Generator 函数，作为上个阶段异步任务的返回结果，被函数体内的变量`y`接收。因此，这一步的`value`属性，返回的就是`2`（变量`y`的值）。
@@ -168,10 +167,10 @@ g.next(2) // { value: 2, done: true }
 **Generator 函数内部还可以部署错误处理代码，捕获函数体外抛出的错误**。
 
 ```javascript
-function* gen(x){
+function* gen(x) {
   try {
     var y = yield x + 2;
-  } catch (e){
+  } catch (e) {
     console.log(e);
   }
   return y;
@@ -179,7 +178,7 @@ function* gen(x){
 
 var g = gen(1);
 g.next();
-g.throw('出错了');
+g.throw("出错了");
 // 出错了
 ```
 
@@ -190,10 +189,10 @@ g.throw('出错了');
 下面看看如何使用 Generator 函数，执行一个真实的异步任务。
 
 ```javascript
-var fetch = require('node-fetch');
+var fetch = require("node-fetch");
 
-function* gen(){
-  var url = 'https://api.github.com/users/github';
+function* gen() {
+  var url = "https://api.github.com/users/github";
   var result = yield fetch(url);
   console.log(result.bio);
 }
@@ -207,11 +206,13 @@ function* gen(){
 var g = gen();
 var result = g.next();
 
-result.value.then(function(data){
-  return data.json();
-}).then(function(data){
-  g.next(data);
-});
+result.value
+  .then(function (data) {
+    return data.json();
+  })
+  .then(function (data) {
+    g.next(data);
+  });
 ```
 
 上面代码中，首先执行 Generator 函数，获取遍历器对象，然后使用`next`方法（第二行），执行异步任务的第一阶段。由于`Fetch`模块返回的是一个 Promise 对象，因此要用`then`方法调用下一个`next`方法。
@@ -235,7 +236,7 @@ function f(m) {
   return m * 2;
 }
 
-f(x + 5)
+f(x + 5);
 ```
 
 上面代码先定义函数`f`，然后向它传入表达式`x + 5`。请问，这个表达式应该何时求值？
@@ -243,17 +244,18 @@ f(x + 5)
 一种意见是"传值调用"（call by value），即在进入函数体之前，就计算`x + 5`的值（等于 6），再将这个值传入函数`f`。C 语言就采用这种策略。
 
 ```javascript
-f(x + 5)
+f(x + 5);
 // 传值调用时，等同于
-f(6)
+f(6);
 ```
 
 另一种意见是“传名调用”（call by name），即直接将表达式`x + 5`传入函数体，只在用到它的时候求值。Haskell 语言采用这种策略。
 
 ```javascript
-f(x + 5)
-// 传名调用时，等同于
-(x + 5) * 2
+f(x + 5)(
+  // 传名调用时，等同于
+  x + 5
+) * 2;
 ```
 
 传值调用和传名调用，哪一种比较好？
@@ -261,7 +263,7 @@ f(x + 5)
 回答是各有利弊。传值调用比较简单，但是对参数求值的时候，实际上还没用到这个参数，有可能造成性能损失。
 
 ```javascript
-function f(a, b){
+function f(a, b) {
   return b;
 }
 
@@ -321,22 +323,22 @@ readFileThunk(callback);
 
 ```javascript
 // ES5版本
-var Thunk = function(fn){
-  return function (){
+var Thunk = function (fn) {
+  return function () {
     var args = Array.prototype.slice.call(arguments);
-    return function (callback){
+    return function (callback) {
       args.push(callback);
       return fn.apply(this, args);
-    }
+    };
   };
 };
 
 // ES6版本
-const Thunk = function(fn) {
+const Thunk = function (fn) {
   return function (...args) {
     return function (callback) {
       return fn.call(this, ...args, callback);
-    }
+    };
   };
 };
 ```
@@ -356,7 +358,7 @@ function f(a, cb) {
 }
 const ft = Thunk(f);
 
-ft(1)(console.log) // 1
+ft(1)(console.log); // 1
 ```
 
 ### Thunkify 模块
@@ -372,11 +374,11 @@ $ npm install thunkify
 使用方式如下。
 
 ```javascript
-var thunkify = require('thunkify');
-var fs = require('fs');
+var thunkify = require("thunkify");
+var fs = require("fs");
 
 var read = thunkify(fs.readFile);
-read('package.json')(function(err, str){
+read("package.json")(function (err, str) {
   // ...
 });
 ```
@@ -385,7 +387,7 @@ Thunkify 的源码与上一节那个简单的转换器非常像。
 
 ```javascript
 function thunkify(fn) {
-  return function() {
+  return function () {
     var args = new Array(arguments.length);
     var ctx = this;
 
@@ -407,15 +409,15 @@ function thunkify(fn) {
       } catch (err) {
         done(err);
       }
-    }
-  }
-};
+    };
+  };
+}
 ```
 
 它的源码主要多了一个检查机制，变量`called`确保回调函数只运行一次。这样的设计与下文的 Generator 函数相关。请看下面的例子。
 
 ```javascript
-function f(a, b, callback){
+function f(a, b, callback) {
   var sum = a + b;
   callback(sum);
   callback(sum);
@@ -443,7 +445,7 @@ function* gen() {
 var g = gen();
 var res = g.next();
 
-while(!res.done){
+while (!res.done) {
   console.log(res.value);
   res = g.next();
 }
@@ -454,14 +456,14 @@ while(!res.done){
 但是，这不适合异步操作。如果必须保证前一步执行完，才能执行后一步，上面的自动执行就不可行。这时，Thunk 函数就能派上用处。以读取文件为例。下面的 Generator 函数封装了两个异步操作。
 
 ```javascript
-var fs = require('fs');
-var thunkify = require('thunkify');
+var fs = require("fs");
+var thunkify = require("thunkify");
 var readFileThunk = thunkify(fs.readFile);
 
-var gen = function* (){
-  var r1 = yield readFileThunk('/etc/fstab');
+var gen = function* () {
+  var r1 = yield readFileThunk("/etc/fstab");
   console.log(r1.toString());
-  var r2 = yield readFileThunk('/etc/shells');
+  var r2 = yield readFileThunk("/etc/shells");
   console.log(r2.toString());
 };
 ```
@@ -517,11 +519,11 @@ run(g);
 有了这个执行器，执行 Generator 函数方便多了。不管内部有多少个异步操作，直接把 Generator 函数传入`run`函数即可。当然，前提是每一个异步操作，都要是 Thunk 函数，也就是说，跟在`yield`命令后面的必须是 Thunk 函数。
 
 ```javascript
-var g = function* (){
-  var f1 = yield readFileThunk('fileA');
-  var f2 = yield readFileThunk('fileB');
+var g = function* () {
+  var f1 = yield readFileThunk("fileA");
+  var f2 = yield readFileThunk("fileB");
   // ...
-  var fn = yield readFileThunk('fileN');
+  var fn = yield readFileThunk("fileN");
 };
 
 run(g);
@@ -541,8 +543,8 @@ Thunk 函数并不是 Generator 函数自动执行的唯一方案。因为自动
 
 ```javascript
 var gen = function* () {
-  var f1 = yield readFile('/etc/fstab');
-  var f2 = yield readFile('/etc/shells');
+  var f1 = yield readFile("/etc/fstab");
+  var f2 = yield readFile("/etc/shells");
   console.log(f1.toString());
   console.log(f2.toString());
 };
@@ -551,7 +553,7 @@ var gen = function* () {
 co 模块可以让你不用编写 Generator 函数的执行器。
 
 ```javascript
-var co = require('co');
+var co = require("co");
 co(gen);
 ```
 
@@ -560,8 +562,8 @@ co(gen);
 `co`函数返回一个`Promise`对象，因此可以用`then`方法添加回调函数。
 
 ```javascript
-co(gen).then(function (){
-  console.log('Generator 函数执行完成');
+co(gen).then(function () {
+  console.log("Generator 函数执行完成");
 });
 ```
 
@@ -588,20 +590,20 @@ co 模块其实就是将两种自动执行器（Thunk 函数和 Promise 对象�
 还是沿用上面的例子。首先，把`fs`模块的`readFile`方法包装成一个 Promise 对象。
 
 ```javascript
-var fs = require('fs');
+var fs = require("fs");
 
-var readFile = function (fileName){
-  return new Promise(function (resolve, reject){
-    fs.readFile(fileName, function(error, data){
+var readFile = function (fileName) {
+  return new Promise(function (resolve, reject) {
+    fs.readFile(fileName, function (error, data) {
       if (error) return reject(error);
       resolve(data);
     });
   });
 };
 
-var gen = function* (){
-  var f1 = yield readFile('/etc/fstab');
-  var f2 = yield readFile('/etc/shells');
+var gen = function* () {
+  var f1 = yield readFile("/etc/fstab");
+  var f2 = yield readFile("/etc/shells");
   console.log(f1.toString());
   console.log(f2.toString());
 };
@@ -612,8 +614,8 @@ var gen = function* (){
 ```javascript
 var g = gen();
 
-g.next().value.then(function(data){
-  g.next(data).value.then(function(data){
+g.next().value.then(function (data) {
+  g.next(data).value.then(function (data) {
     g.next(data);
   });
 });
@@ -622,13 +624,13 @@ g.next().value.then(function(data){
 手动执行其实就是用`then`方法，层层添加回调函数。理解了这一点，就可以写出一个自动执行器。
 
 ```javascript
-function run(gen){
+function run(gen) {
   var g = gen();
 
-  function next(data){
+  function next(data) {
     var result = g.next(data);
     if (result.done) return result.value;
-    result.value.then(function(data){
+    result.value.then(function (data) {
       next(data);
     });
   }
@@ -651,8 +653,7 @@ co 就是上面那个自动执行器的扩展，它的源码只有几十行，�
 function co(gen) {
   var ctx = this;
 
-  return new Promise(function(resolve, reject) {
-  });
+  return new Promise(function (resolve, reject) {});
 }
 ```
 
@@ -662,9 +663,9 @@ function co(gen) {
 function co(gen) {
   var ctx = this;
 
-  return new Promise(function(resolve, reject) {
-    if (typeof gen === 'function') gen = gen.call(ctx);
-    if (!gen || typeof gen.next !== 'function') return resolve(gen);
+  return new Promise(function (resolve, reject) {
+    if (typeof gen === "function") gen = gen.call(ctx);
+    if (!gen || typeof gen.next !== "function") return resolve(gen);
   });
 }
 ```
@@ -675,9 +676,9 @@ function co(gen) {
 function co(gen) {
   var ctx = this;
 
-  return new Promise(function(resolve, reject) {
-    if (typeof gen === 'function') gen = gen.call(ctx);
-    if (!gen || typeof gen.next !== 'function') return resolve(gen);
+  return new Promise(function (resolve, reject) {
+    if (typeof gen === "function") gen = gen.call(ctx);
+    if (!gen || typeof gen.next !== "function") return resolve(gen);
 
     onFulfilled();
     function onFulfilled(res) {
@@ -702,10 +703,10 @@ function next(ret) {
   if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
   return onRejected(
     new TypeError(
-      'You may only yield a function, promise, generator, array, or object, '
-      + 'but the following object was passed: "'
-      + String(ret.value)
-      + '"'
+      "You may only yield a function, promise, generator, array, or object, " +
+        'but the following object was passed: "' +
+        String(ret.value) +
+        '"'
     )
   );
 }
@@ -730,10 +731,7 @@ co 支持并发的异步操作，即允许某些操作同时进行，等到它�
 ```javascript
 // 数组的写法
 co(function* () {
-  var res = yield [
-    Promise.resolve(1),
-    Promise.resolve(2)
-  ];
+  var res = yield [Promise.resolve(1), Promise.resolve(2)];
   console.log(res);
 }).catch(onerror);
 
@@ -757,7 +755,7 @@ co(function* () {
 
 function* somethingAsync(x) {
   // do something async
-  return y
+  return y;
 }
 ```
 
@@ -774,28 +772,28 @@ Node 提供 Stream 模式读写数据，特点是一次只处理数据的一部�
 使用`Promise.race()`函数，可以判断这三个事件之中哪一个最先发生，只有当`data`事件最先发生时，才进入下一个数据块的处理。从而，我们可以通过一个`while`循环，完成所有数据的读取。
 
 ```javascript
-const co = require('co');
-const fs = require('fs');
+const co = require("co");
+const fs = require("fs");
 
-const stream = fs.createReadStream('./les_miserables.txt');
+const stream = fs.createReadStream("./les_miserables.txt");
 let valjeanCount = 0;
 
-co(function*() {
-  while(true) {
+co(function* () {
+  while (true) {
     const res = yield Promise.race([
-      new Promise(resolve => stream.once('data', resolve)),
-      new Promise(resolve => stream.once('end', resolve)),
-      new Promise((resolve, reject) => stream.once('error', reject))
+      new Promise((resolve) => stream.once("data", resolve)),
+      new Promise((resolve) => stream.once("end", resolve)),
+      new Promise((resolve, reject) => stream.once("error", reject)),
     ]);
     if (!res) {
       break;
     }
-    stream.removeAllListeners('data');
-    stream.removeAllListeners('end');
-    stream.removeAllListeners('error');
-    valjeanCount += (res.toString().match(/valjean/ig) || []).length;
+    stream.removeAllListeners("data");
+    stream.removeAllListeners("end");
+    stream.removeAllListeners("error");
+    valjeanCount += (res.toString().match(/valjean/gi) || []).length;
   }
-  console.log('count:', valjeanCount); // count: 1120
+  console.log("count:", valjeanCount); // count: 1120
 });
 ```
 

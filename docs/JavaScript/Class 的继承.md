@@ -1,12 +1,10 @@
 ---
 title: Class 的继承
-date: 2022-02-07 12:20:21
 
 categories:
-  - docs
   - ES6
 tags:
-  - 
+  -
 ---
 
 # Class 的继承
@@ -16,13 +14,13 @@ tags:
 Class 可以通过`extends`关键字实现继承，这比 ES5 的通过修改原型链实现继承，要清晰和方便很多。
 
 ```javascript
-class Point {
-}
+class Point {}
 
-class ColorPoint extends Point {
-}
+class ColorPoint extends Point {}
 ```
+
 <!-- more -->
+
 上面代码定义了一个`ColorPoint`类，该类通过`extends`关键字，继承了`Point`类的所有属性和方法。但是由于没有部署任何代码，所以这两个类完全一样，等于复制了一个`Point`类。下面，我们在`ColorPoint`内部加上代码。
 
 ```javascript
@@ -33,7 +31,7 @@ class ColorPoint extends Point {
   }
 
   toString() {
-    return this.color + ' ' + super.toString(); // 调用父类的toString()
+    return this.color + " " + super.toString(); // 调用父类的toString()
   }
 }
 ```
@@ -43,11 +41,12 @@ class ColorPoint extends Point {
 **子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。**这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。**如果不调用`super`方法，子类就得不到`this`对象。**
 
 ```javascript
-class Point { /* ... */ }
+class Point {
+  /* ... */
+}
 
 class ColorPoint extends Point {
-  constructor() {
-  }
+  constructor() {}
 }
 
 let cp = new ColorPoint(); // ReferenceError
@@ -60,8 +59,7 @@ ES5 的继承，实质是先创造子类的实例对象`this`，然后再将父�
 如果子类没有定义`constructor`方法，这个方法会被默认添加，代码如下。也就是说，不管有没有显式定义，任何一个子类都有`constructor`方法。
 
 ```javascript
-class ColorPoint extends Point {
-}
+class ColorPoint extends Point {}
 
 // 等同于
 class ColorPoint extends Point {
@@ -95,10 +93,10 @@ class ColorPoint extends Point {
 下面是生成子类实例的代码。
 
 ```javascript
-let cp = new ColorPoint(25, 8, 'green');
+let cp = new ColorPoint(25, 8, "green");
 
-cp instanceof ColorPoint // true
-cp instanceof Point // true
+cp instanceof ColorPoint; // true
+cp instanceof Point; // true
 ```
 
 上面代码中，实例对象`cp`同时是`ColorPoint`和`Point`两个类的实例，这与 ES5 的行为完全一致。
@@ -108,14 +106,13 @@ cp instanceof Point // true
 ```javascript
 class A {
   static hello() {
-    console.log('hello world');
+    console.log("hello world");
   }
 }
 
-class B extends A {
-}
+class B extends A {}
 
-B.hello()  // hello world
+B.hello(); // hello world
 ```
 
 上面代码中，`hello()`是`A`类的静态方法，`B`继承`A`，也继承了`A`的静态方法。
@@ -125,7 +122,7 @@ B.hello()  // hello world
 `Object.getPrototypeOf`方法可以用来从子类上获取父类。
 
 ```javascript
-Object.getPrototypeOf(ColorPoint) === Point
+Object.getPrototypeOf(ColorPoint) === Point;
 // true
 ```
 
@@ -162,8 +159,8 @@ class B extends A {
     super();
   }
 }
-new A() // A
-new B() // B
+new A(); // A
+new B(); // B
 ```
 
 上面代码中，`new.target`指向当前正在执行的函数。可以看到，在`super()`执行时，它指向的是子类`B`的构造函数，而不是父类`A`的构造函数。也就是说，`super()`内部的`this`指向的是`B`。
@@ -219,7 +216,7 @@ class B extends A {
 }
 
 let b = new B();
-b.m // undefined
+b.m; // undefined
 ```
 
 上面代码中，`p`是父类`A`实例的属性，`super.p`就引用不到它。
@@ -233,7 +230,7 @@ A.prototype.x = 2;
 class B extends A {
   constructor() {
     super();
-    console.log(super.x) // 2
+    console.log(super.x); // 2
   }
 }
 
@@ -265,7 +262,7 @@ class B extends A {
 }
 
 let b = new B();
-b.m() // 2
+b.m(); // 2
 ```
 
 上面代码中，`super.print()`虽然调用的是`A.prototype.print()`，但是`A.prototype.print()`内部的`this`指向子类`B`的实例，导致输出的是`2`，而不是`1`。也就是说，实际上执行的是`super.print.call(this)`。
@@ -299,11 +296,11 @@ let b = new B();
 ```javascript
 class Parent {
   static myMethod(msg) {
-    console.log('static', msg);
+    console.log("static", msg);
   }
 
   myMethod(msg) {
-    console.log('instance', msg);
+    console.log("instance", msg);
   }
 }
 
@@ -348,7 +345,7 @@ class B extends A {
 }
 
 B.x = 3;
-B.m() // 3
+B.m(); // 3
 ```
 
 上面代码中，静态方法`B.m`里面，`super.print`指向父类的静态方法。这个方法里面的`this`指向的是`B`，而不是`B`的实例。
@@ -389,7 +386,7 @@ let b = new B();
 var obj = {
   toString() {
     return "MyObject: " + super.toString();
-  }
+  },
 };
 
 obj.toString(); // MyObject: [object Object]
@@ -404,14 +401,12 @@ obj.toString(); // MyObject: [object Object]
 （2）子类`prototype`属性的`__proto__`属性，表示方法的继承，总是指向父类的`prototype`属性。
 
 ```javascript
-class A {
-}
+class A {}
 
-class B extends A {
-}
+class B extends A {}
 
-B.__proto__ === A // true
-B.prototype.__proto__ === A.prototype // true
+B.__proto__ === A; // true
+B.prototype.__proto__ === A.prototype; // true
 ```
 
 上面代码中，子类`B`的`__proto__`属性指向父类`A`，子类`B`的`prototype`属性的`__proto__`属性指向父类`A`的`prototype`属性。
@@ -419,11 +414,9 @@ B.prototype.__proto__ === A.prototype // true
 这样的结果是因为，类的继承是按照下面的模式实现的。
 
 ```javascript
-class A {
-}
+class A {}
 
-class B {
-}
+class B {}
 
 // B 的实例继承 A 的实例
 Object.setPrototypeOf(B.prototype, A.prototype);
@@ -440,7 +433,7 @@ const b = new B();
 Object.setPrototypeOf = function (obj, proto) {
   obj.__proto__ = proto;
   return obj;
-}
+};
 ```
 
 因此，就得到了上面的结果。
@@ -466,8 +459,7 @@ B.prototype.__proto__ = A.prototype;
 `extends`关键字后面可以跟多种类型的值。
 
 ```javascript
-class B extends A {
-}
+class B extends A {}
 ```
 
 上面代码的`A`，只要是一个有`prototype`属性的函数，就能被`B`继承。由于函数都有`prototype`属性（除了`Function.prototype`函数），因此`A`可以是任意函数。
@@ -475,11 +467,10 @@ class B extends A {
 下面，讨论两种情况。第一种，子类继承`Object`类。
 
 ```javascript
-class A extends Object {
-}
+class A extends Object {}
 
-A.__proto__ === Object // true
-A.prototype.__proto__ === Object.prototype // true
+A.__proto__ === Object; // true
+A.prototype.__proto__ === Object.prototype; // true
 ```
 
 这种情况下，`A`其实就是构造函数`Object`的复制，`A`的实例就是`Object`的实例。
@@ -487,11 +478,10 @@ A.prototype.__proto__ === Object.prototype // true
 第二种情况，不存在任何继承。
 
 ```javascript
-class A {
-}
+class A {}
 
-A.__proto__ === Function.prototype // true
-A.prototype.__proto__ === Object.prototype // true
+A.__proto__ === Function.prototype; // true
+A.prototype.__proto__ === Object.prototype; // true
 ```
 
 这种情况下，`A`作为一个基类（即不存在任何继承），就是一个普通函数，所以直接继承`Function.prototype`。但是，`A`调用后返回一个空对象（即`Object`实例），所以`A.prototype.__proto__`指向构造函数（`Object`）的`prototype`属性。
@@ -502,10 +492,10 @@ A.prototype.__proto__ === Object.prototype // true
 
 ```javascript
 var p1 = new Point(2, 3);
-var p2 = new ColorPoint(2, 3, 'red');
+var p2 = new ColorPoint(2, 3, "red");
 
-p2.__proto__ === p1.__proto__ // false
-p2.__proto__.__proto__ === p1.__proto__ // true
+p2.__proto__ === p1.__proto__; // false
+p2.__proto__.__proto__ === p1.__proto__; // true
 ```
 
 上面代码中，`ColorPoint`继承了`Point`，导致前者原型的原型是后者的原型。
@@ -514,10 +504,10 @@ p2.__proto__.__proto__ === p1.__proto__ // true
 
 ```javascript
 p2.__proto__.__proto__.printName = function () {
-  console.log('Ha');
+  console.log("Ha");
 };
 
-p1.printName() // "Ha"
+p1.printName(); // "Ha"
 ```
 
 上面代码在`ColorPoint`的实例`p2`上向`Point`类添加方法，结果影响到了`Point`的实例`p1`。
@@ -548,8 +538,8 @@ MyArray.prototype = Object.create(Array.prototype, {
     value: MyArray,
     writable: true,
     configurable: true,
-    enumerable: true
-  }
+    enumerable: true,
+  },
 });
 ```
 
@@ -558,10 +548,10 @@ MyArray.prototype = Object.create(Array.prototype, {
 ```javascript
 var colors = new MyArray();
 colors[0] = "red";
-colors.length  // 0
+colors.length; // 0
 
 colors.length = 0;
-colors[0]  // "red"
+colors[0]; // "red"
 ```
 
 之所以会发生这种情况，是因为子类无法获得原生构造函数的内部属性，通过`Array.apply()`或者分配给原型对象都不行。原生构造函数会忽略`apply`方法传入的`this`，也就是说，原生构造函数的`this`无法绑定，导致拿不到内部属性。
@@ -573,10 +563,10 @@ ES5 是先新建子类的实例对象`this`，再将父类的属性添加到子�
 ```javascript
 var e = {};
 
-Object.getOwnPropertyNames(Error.call(e))
+Object.getOwnPropertyNames(Error.call(e));
 // [ 'stack' ]
 
-Object.getOwnPropertyNames(e)
+Object.getOwnPropertyNames(e);
 // []
 ```
 
@@ -593,10 +583,10 @@ class MyArray extends Array {
 
 var arr = new MyArray();
 arr[0] = 12;
-arr.length // 1
+arr.length; // 1
 
 arr.length = 0;
-arr[0] // undefined
+arr[0]; // undefined
 ```
 
 上面代码定义了一个`MyArray`类，继承了`Array`构造函数，因此就可以从`MyArray`生成数组的实例。这意味着，ES6 可以自定义原生数据结构（比如`Array`、`String`等）的子类，这是 ES5 无法做到的。
@@ -621,18 +611,18 @@ var x = new VersionedArray();
 
 x.push(1);
 x.push(2);
-x // [1, 2]
-x.history // [[]]
+x; // [1, 2]
+x.history; // [[]]
 
 x.commit();
-x.history // [[], [1, 2]]
+x.history; // [[], [1, 2]]
 
 x.push(3);
-x // [1, 2, 3]
-x.history // [[], [1, 2]]
+x; // [1, 2, 3]
+x.history; // [[], [1, 2]]
 
 x.revert();
-x // [1, 2]
+x; // [1, 2]
 ```
 
 上面代码中，`VersionedArray`会通过`commit`方法，将自己的当前状态生成一个版本快照，存入`history`属性。`revert`方法用来将数组重置为最新一次保存的版本。除此之外，`VersionedArray`依然是一个普通数组，所有原生的数组方法都可以在它上面调用。
@@ -644,7 +634,7 @@ class ExtendableError extends Error {
   constructor(message) {
     super();
     this.message = message;
-    this.stack = (new Error()).stack;
+    this.stack = new Error().stack;
     this.name = this.constructor.name;
   }
 }
@@ -655,11 +645,11 @@ class MyError extends ExtendableError {
   }
 }
 
-var myerror = new MyError('ll');
-myerror.message // "ll"
-myerror instanceof Error // true
-myerror.name // "MyError"
-myerror.stack
+var myerror = new MyError("ll");
+myerror.message; // "ll"
+myerror instanceof Error; // true
+myerror.name; // "MyError"
+myerror.stack;
 // Error
 //     at MyError.ExtendableError
 //     ...
@@ -668,13 +658,13 @@ myerror.stack
 注意，继承`Object`的子类，有一个[行为差异](http://stackoverflow.com/questions/36203614/super-does-not-pass-arguments-when-instantiating-a-class-extended-from-object)。
 
 ```javascript
-class NewObj extends Object{
-  constructor(){
+class NewObj extends Object {
+  constructor() {
     super(...arguments);
   }
 }
-var o = new NewObj({attr: true});
-o.attr === true  // false
+var o = new NewObj({ attr: true });
+o.attr === true; // false
 ```
 
 上面代码中，`NewObj`继承了`Object`，但是无法通过`super`方法向父类`Object`传参。这是因为 ES6 改变了`Object`构造函数的行为，一旦发现`Object`方法不是通过`new Object()`这种形式调用，ES6 规定`Object`构造函数会忽略参数。
@@ -685,12 +675,12 @@ Mixin 指的是多个对象合成一个新的对象，新对象具有各个组�
 
 ```javascript
 const a = {
-  a: 'a'
+  a: "a",
 };
 const b = {
-  b: 'b'
+  b: "b",
 };
-const c = {...a, ...b}; // {a: 'a', b: 'b'}
+const c = { ...a, ...b }; // {a: 'a', b: 'b'}
 ```
 
 上面代码中，`c`对象是`a`对象和`b`对象的合成，具有两者的接口。
@@ -717,10 +707,7 @@ function mix(...mixins) {
 
 function copyProperties(target, source) {
   for (let key of Reflect.ownKeys(source)) {
-    if ( key !== 'constructor'
-      && key !== 'prototype'
-      && key !== 'name'
-    ) {
+    if (key !== "constructor" && key !== "prototype" && key !== "name") {
       let desc = Object.getOwnPropertyDescriptor(source, key);
       Object.defineProperty(target, key, desc);
     }
