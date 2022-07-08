@@ -1,0 +1,1 @@
+const t={key:"v-f647ca88",path:"/CSS/%E5%A4%9A%E8%BE%B9%E5%BD%A2.html",title:"\u591A\u8FB9\u5F62",lang:"en-US",frontmatter:{title:"\u591A\u8FB9\u5F62",categories:["CSS"],tags:["polygon"]},excerpt:"",headers:[],git:{updatedTime:1657074596e3,contributors:[{name:"ty",email:"15190562801@163.com",commits:1}]},filePathRelative:"CSS/\u591A\u8FB9\u5F62.md"};export{t as data};

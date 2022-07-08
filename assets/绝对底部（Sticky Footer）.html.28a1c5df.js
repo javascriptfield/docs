@@ -1,0 +1,5 @@
+import{_ as t,o,c as a,a as e,e as r}from"./app.b5ebdf5a.js";const c={},i=e("h1",{id:"\u7EDD\u5BF9\u5E95\u90E8-sticky-footer",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#\u7EDD\u5BF9\u5E95\u90E8-sticky-footer","aria-hidden":"true"},"#"),r(" \u7EDD\u5BF9\u5E95\u90E8\uFF08Sticky Footer\uFF09")],-1),n=e("iframe",{height:"700",style:{width:"100%"},scrolling:"no",title:"\u7EDD\u5BF9\u5E95\u90E8\uFF08Sticky Footer\uFF09",src:"https://codepen.io/javascriptfield/embed/ZExbvmM?default-tab=result",frameborder:"no",loading:"lazy",allowtransparency:"true",allowfullscreen:"true"},`
+  See the Pen <a href="https://codepen.io/javascriptfield/pen/ZExbvmM">
+  \u7EDD\u5BF9\u5E95\u90E8\uFF08Sticky Footer\uFF09</a> by ye (<a href="https://codepen.io/javascriptfield">@javascriptfield</a>)
+  on <a href="https://codepen.io">CodePen</a>.
+`,-1),s=[i,n];function d(l,_){return o(),a("div",null,s)}var f=t(c,[["render",d],["__file","\u7EDD\u5BF9\u5E95\u90E8\uFF08Sticky Footer\uFF09.html.vue"]]);export{f as default};

@@ -1,0 +1,5 @@
+import{_ as a,o as t,c as r,a as e,e as o}from"./app.b5ebdf5a.js";const n={},s=e("h1",{id:"\u901A\u8FC7\u6A21\u7CCA\u5F31\u5316\u80CC\u666F",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#\u901A\u8FC7\u6A21\u7CCA\u5F31\u5316\u80CC\u666F","aria-hidden":"true"},"#"),o(" \u901A\u8FC7\u6A21\u7CCA\u5F31\u5316\u80CC\u666F")],-1),c=e("iframe",{height:"700",style:{width:"100%"},scrolling:"no",title:"\u901A\u8FC7\u6A21\u7CCA\u5F31\u5316\u80CC\u666F",src:"https://codepen.io/javascriptfield/embed/abYvEaM?default-tab=result",frameborder:"no",loading:"lazy",allowtransparency:"true",allowfullscreen:"true"},`
+  See the Pen <a href="https://codepen.io/javascriptfield/pen/abYvEaM">
+  \u901A\u8FC7\u6A21\u7CCA\u5F31\u5316\u80CC\u666F</a> by ye (<a href="https://codepen.io/javascriptfield">@javascriptfield</a>)
+  on <a href="https://codepen.io">CodePen</a>.
+`,-1),i=[s,c];function d(l,_){return t(),r("div",null,i)}var f=a(n,[["render",d],["__file","\u901A\u8FC7\u6A21\u7CCA\u5F31\u5316\u80CC\u666F.html.vue"]]);export{f as default};

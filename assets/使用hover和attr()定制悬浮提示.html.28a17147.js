@@ -1,0 +1,5 @@
+import{_ as t,o as a,c as r,a as e,e as o}from"./app.b5ebdf5a.js";const n={},s=e("h1",{id:"\u4F7F\u7528-hover-\u548C-attr-\u5B9A\u5236\u60AC\u6D6E\u63D0\u793A",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#\u4F7F\u7528-hover-\u548C-attr-\u5B9A\u5236\u60AC\u6D6E\u63D0\u793A","aria-hidden":"true"},"#"),o(" \u4F7F\u7528 hover \u548C attr()\u5B9A\u5236\u60AC\u6D6E\u63D0\u793A")],-1),d=e("iframe",{height:"700",style:{width:"100%"},scrolling:"no",title:"Untitled",src:"https://codepen.io/javascriptfield/embed/KKodyEg?default-tab=result",frameborder:"no",loading:"lazy",allowtransparency:"true",allowfullscreen:"true"},`
+  See the Pen <a href="https://codepen.io/javascriptfield/pen/KKodyEg">
+  Untitled</a> by ye (<a href="https://codepen.io/javascriptfield">@javascriptfield</a>)
+  on <a href="https://codepen.io">CodePen</a>.
+`,-1),i=[s,d];function c(l,_){return a(),r("div",null,i)}var f=t(n,[["render",c],["__file","\u4F7F\u7528hover\u548Cattr()\u5B9A\u5236\u60AC\u6D6E\u63D0\u793A.html.vue"]]);export{f as default};
